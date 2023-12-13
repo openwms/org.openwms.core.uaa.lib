@@ -20,12 +20,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * An UAAStarter.
+ * An UAATestStarter.
  *
  * @author Heiko Scherrer
  */
-@SpringBootApplication(scanBasePackageClasses = {UAAStarter.class, SolutionApp.class})
-public class UAAStarter {
+@SpringBootApplication(scanBasePackageClasses = {UAATestStarter.class, SolutionApp.class})
+public class UAATestStarter {
 
     /**
      * Boot up!
@@ -33,6 +33,6 @@ public class UAAStarter {
      * @param args Some args
      */
     public static void main(String[] args) {
-        SpringApplication.run(UAAStarter.class, args);
+        SpringApplication.run(UAATestStarter.class, args);
     }
 }
