@@ -41,6 +41,14 @@ owms:
   srv:
     protocol: http
     hostname: localhost
+  security:
+    encoder:
+      bcrypt:
+        strength: 4
+    successUrl: "/"
+    system:
+      username: openwms
+      password: openwms
 
 server:
   port: ${PORT:8110}

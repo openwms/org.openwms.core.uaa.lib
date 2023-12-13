@@ -15,9 +15,9 @@
  */
 package org.openwms.core.uaa;
 
-import org.openwms.core.uaa.impl.Role;
 import org.openwms.core.uaa.api.RoleVO;
 import org.openwms.core.uaa.api.ValidationGroups;
+import org.openwms.core.uaa.impl.Role;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

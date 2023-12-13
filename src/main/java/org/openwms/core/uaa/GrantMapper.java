@@ -18,10 +18,10 @@ package org.openwms.core.uaa;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.SubclassMapping;
-import org.openwms.core.uaa.impl.Grant;
-import org.openwms.core.uaa.impl.SecurityObject;
 import org.openwms.core.uaa.api.GrantVO;
 import org.openwms.core.uaa.api.SecurityObjectVO;
+import org.openwms.core.uaa.impl.Grant;
+import org.openwms.core.uaa.impl.SecurityObject;
 
 import java.util.List;
 
@@ -38,6 +38,7 @@ public interface GrantMapper {
 
     @Mapping(source = "persistentKey", target = "pKey")
     GrantVO convertToVO(Grant eo);
+
     List<GrantVO> convertToVOs(List<Grant> eo);
 
     @SubclassMapping(source = GrantVO.class, target = Grant.class)

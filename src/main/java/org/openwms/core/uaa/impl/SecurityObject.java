@@ -28,7 +28,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -48,7 +48,7 @@ public class SecurityObject extends ApplicationEntity implements Serializable {
     /** Unique name of the {@code SecurityObject}. */
     @Column(name = "C_NAME", nullable = false)
     @OrderBy
-    @NotEmpty(groups = {ValidationGroups.Create.class, ValidationGroups.Modify.class})
+    @NotBlank(groups = {ValidationGroups.Create.class, ValidationGroups.Modify.class})
     private String name;
 
     /** A descriptive text for the {@code SecurityObject}. */
