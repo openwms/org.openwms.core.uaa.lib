@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="(2.0.0-SNAPSHOT-2)">
+<meta name="author" content="(2.0.0-SNAPSHOT-3)">
 <title>OpenWMS.org WMS: RESTful API (UAA)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (UAA)</h1>
 <div class="details">
-<span id="author" class="author">(2.0.0-SNAPSHOT-2)</span><br>
+<span id="author" class="author">(2.0.0-SNAPSHOT-3)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -881,14 +881,14 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/users/c0181e6a-0bc3-4c53-a560-73edc516d9c1/
+Location: http://localhost:8080/users/033f8a88-4d22-4079-8761-99df43270a19/
 Content-Type: application/vnd.openwms.uaa.user-v1+json
 Content-Length: 290
 
 {
   "links" : [ ],
   "ol" : 0,
-  "pKey" : "c0181e6a-0bc3-4c53-a560-73edc516d9c1",
+  "pKey" : "033f8a88-4d22-4079-8761-99df43270a19",
   "username" : "admin2",
   "externalUser" : false,
   "locked" : false,
@@ -996,55 +996,9 @@ Content-Length: 1280
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 1280
+Content-Length: 3
 
-[ {
-  "links" : [ {
-    "rel" : "user-findbypkey",
-    "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405e"
-  } ],
-  "ol" : 1,
-  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
-  "username" : "tester",
-  "externalUser" : false,
-  "lastPasswordChange" : "2020-06-22T19:02:47Z",
-  "locked" : false,
-  "enabled" : true,
-  "expirationDate" : "2020-06-23T19:02:45Z",
-  "fullname" : "Tester",
-  "details" : { },
-  "emailAddresses" : [ {
-    "emailAddress" : "tester@acme.com",
-    "primary" : true,
-    "fullname" : "Mr. Tester"
-  } ],
-  "roleNames" : [ ]
-}, {
-  "links" : [ {
-    "rel" : "user-findbypkey",
-    "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"
-  } ],
-  "ol" : 1,
-  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
-  "username" : "jenkins",
-  "externalUser" : true,
-  "lastPasswordChange" : "2020-06-22T19:02:47Z",
-  "locked" : true,
-  "enabled" : true,
-  "expirationDate" : "2020-06-23T19:02:45Z",
-  "fullname" : "Mister Jenkins",
-  "details" : { },
-  "emailAddresses" : [ {
-    "emailAddress" : "admin.private@acme.com",
-    "primary" : true,
-    "fullname" : "Mr. Jenkins"
-  }, {
-    "emailAddress" : "admin@acme.com",
-    "primary" : false,
-    "fullname" : "Mr. Jenkins"
-  } ],
-  "roleNames" : [ "ROLE_ADMIN" ]
-} ]</code></pre>
+[ ]</code></pre>
 </div>
 </div>
 </div>
@@ -1249,7 +1203,7 @@ Content-Length: 360
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
-  "lastPasswordChange" : "2023-12-13T08:46:22Z",
+  "lastPasswordChange" : "2023-12-13T13:05:12Z",
   "locked" : true,
   "enabled" : false,
   "details" : { },
@@ -1433,7 +1387,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/roles/8293357b-b35c-4345-bda5-b480335ca07a/
+Location: http://localhost:8080/roles/801e7629-3e1a-4fa3-863b-af5abd9c722c/
 Content-Type: application/vnd.openwms.uaa.role-v1+json
 Content-Length: 554
 
@@ -1441,16 +1395,16 @@ Content-Length: 554
   "@class" : "org.openwms.core.uaa.api.RoleVO",
   "links" : [ {
     "rel" : "users",
-    "href" : "http://localhost:8080/roles/8293357b-b35c-4345-bda5-b480335ca07a/users"
+    "href" : "http://localhost:8080/roles/801e7629-3e1a-4fa3-863b-af5abd9c722c/users"
   }, {
     "rel" : "grants",
-    "href" : "http://localhost:8080/roles/8293357b-b35c-4345-bda5-b480335ca07a/grants"
+    "href" : "http://localhost:8080/roles/801e7629-3e1a-4fa3-863b-af5abd9c722c/grants"
   }, {
     "rel" : "role-findbypkey",
-    "href" : "http://localhost:8080/roles/8293357b-b35c-4345-bda5-b480335ca07a"
+    "href" : "http://localhost:8080/roles/801e7629-3e1a-4fa3-863b-af5abd9c722c"
   } ],
   "ol" : 0,
-  "pKey" : "8293357b-b35c-4345-bda5-b480335ca07a",
+  "pKey" : "801e7629-3e1a-4fa3-863b-af5abd9c722c",
   "name" : "ROLE_DEV",
   "description" : "Developers",
   "immutable" : true
@@ -2020,7 +1974,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/grants/20812372-b72c-4386-9b6e-ab59cc835c8b/
+Location: http://localhost:8080/grants/c3c9173a-be87-41eb-9be1-2657906da7f6/
 Content-Type: application/vnd.openwms.uaa.grant-v1+json
 Content-Length: 331
 
@@ -2028,10 +1982,10 @@ Content-Length: 331
   "@class" : "org.openwms.core.uaa.api.GrantVO",
   "links" : [ {
     "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/20812372-b72c-4386-9b6e-ab59cc835c8b"
+    "href" : "http://localhost:8080/grants/c3c9173a-be87-41eb-9be1-2657906da7f6"
   } ],
   "ol" : 0,
-  "pKey" : "20812372-b72c-4386-9b6e-ab59cc835c8b",
+  "pKey" : "c3c9173a-be87-41eb-9be1-2657906da7f6",
   "name" : "VIEW_USERS",
   "description" : "Permission to view all users in UI"
 }</code></pre>
@@ -2291,7 +2245,7 @@ Content-Length: 121
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-13 08:39:19 UTC
+Last updated 2023-12-13 13:01:32 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
