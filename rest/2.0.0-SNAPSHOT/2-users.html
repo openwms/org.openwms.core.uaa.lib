@@ -564,14 +564,16 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/users/033f8a88-4d22-4079-8761-99df43270a19/
+Location: http://localhost:8080/users/3611b10a-611b-483c-8e4b-2ef7de002602/
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 290
+Content-Length: 356
 
 {
   "links" : [ ],
   "ol" : 0,
-  "pKey" : "033f8a88-4d22-4079-8761-99df43270a19",
+  "createDt" : 1702634376758,
+  "lastModifiedDt" : 1702634376758,
+  "pKey" : "3611b10a-611b-483c-8e4b-2ef7de002602",
   "username" : "admin2",
   "externalUser" : false,
   "locked" : false,
@@ -621,7 +623,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 1280
+Content-Length: 1448
 
 [ {
   "links" : [ {
@@ -629,6 +631,8 @@ Content-Length: 1280
     "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"
   } ],
   "ol" : 1,
+  "createDt" : "2020-06-22T19:02:47Z",
+  "lastModifiedDt" : "2023-12-15T09:59:39Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
   "username" : "jenkins",
   "externalUser" : true,
@@ -654,6 +658,8 @@ Content-Length: 1280
     "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405e"
   } ],
   "ol" : 1,
+  "createDt" : "2020-06-22T19:02:47Z",
+  "lastModifiedDt" : "2023-12-15T09:59:39Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "tester",
   "externalUser" : false,
@@ -704,9 +710,9 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 562
+Content-Length: 618
 
-{"links":[{"rel":"user-findbypkey","href":"http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"}],"ol":1,"pKey":"96baa849-dd19-4b19-8c5e-895d3b7f405d","username":"jenkins","externalUser":true,"lastPasswordChange":"2020-06-22T19:02:47Z","locked":true,"enabled":true,"expirationDate":"2020-06-23T19:02:45Z","fullname":"Mister Jenkins","details":{},"emailAddresses":[{"emailAddress":"admin.private@acme.com","primary":true,"fullname":"Mr. Jenkins"},{"emailAddress":"admin@acme.com","primary":false,"fullname":"Mr. Jenkins"}],"roleNames":["ROLE_ADMIN"]}</code></pre>
+{"links":[{"rel":"user-findbypkey","href":"http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"}],"ol":1,"createDt":1592852567404,"lastModifiedDt":1702634376899,"pKey":"96baa849-dd19-4b19-8c5e-895d3b7f405d","username":"jenkins","externalUser":true,"lastPasswordChange":"2020-06-22T19:02:47Z","locked":true,"enabled":true,"expirationDate":"2020-06-23T19:02:45Z","fullname":"Mister Jenkins","details":{},"emailAddresses":[{"emailAddress":"admin.private@acme.com","primary":true,"fullname":"Mr. Jenkins"},{"emailAddress":"admin@acme.com","primary":false,"fullname":"Mr. Jenkins"}],"roleNames":["ROLE_ADMIN"]}</code></pre>
 </div>
 </div>
 </div>
@@ -729,7 +735,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.role-v1+json
-Content-Length: 1563
+Content-Length: 2003
 
 [ {
   "@class" : "org.openwms.core.uaa.api.RoleVO",
@@ -741,6 +747,8 @@ Content-Length: 1563
   "users" : [ {
     "links" : [ ],
     "ol" : 1,
+    "createDt" : "2020-06-22T19:02:47Z",
+    "lastModifiedDt" : "2023-12-15T09:59:39Z",
     "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
     "username" : "jenkins",
     "externalUser" : true,
@@ -764,24 +772,32 @@ Content-Length: 1563
   "grants" : [ {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
+    "createDt" : "2023-12-15T09:59:39Z",
+    "lastModifiedDt" : "2023-12-15T09:59:39Z",
     "pKey" : "5",
     "name" : "SEC_UAA_USER_MODIFY",
     "description" : "Permission to modify Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
+    "createDt" : "2023-12-15T09:59:39Z",
+    "lastModifiedDt" : "2023-12-15T09:59:39Z",
     "pKey" : "4",
     "name" : "SEC_UAA_USER_CREATE",
     "description" : "Permission to create Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
+    "createDt" : "2023-12-15T09:59:39Z",
+    "lastModifiedDt" : "2023-12-15T09:59:39Z",
     "pKey" : "3",
     "name" : "SEC_UAA_USER_LOOKUP",
     "description" : "Permission to find Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
+    "createDt" : "2023-12-15T09:59:39Z",
+    "lastModifiedDt" : "2023-12-15T09:59:39Z",
     "pKey" : "6",
     "name" : "SEC_UAA_USER_DELETE",
     "description" : "Permission to delete Users"
@@ -835,11 +851,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 292
+Content-Length: 358
 
 {
   "links" : [ ],
   "ol" : 0,
+  "createDt" : 1592852567404,
+  "lastModifiedDt" : 1702634373969,
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
@@ -878,15 +896,17 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 360
+Content-Length: 426
 
 {
   "links" : [ ],
   "ol" : 3,
+  "createDt" : 1592852567404,
+  "lastModifiedDt" : 1702634374368,
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
-  "lastPasswordChange" : "2023-12-13T13:05:12Z",
+  "lastPasswordChange" : "2023-12-15T09:59:36Z",
   "locked" : true,
   "enabled" : false,
   "details" : { },
@@ -948,7 +968,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-13 13:01:32 UTC
+Last updated 2023-12-15 09:57:20 UTC
 </div>
 </div>
 </body>
