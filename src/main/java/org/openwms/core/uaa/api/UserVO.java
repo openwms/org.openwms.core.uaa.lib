@@ -29,6 +29,7 @@ import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -109,6 +110,8 @@ public class UserVO extends AbstractBase<UserVO> implements Serializable {
         emailAddresses = builder.emailAddresses;
         roleNames = builder.roleNames;
         super.setOl(builder.ol);
+        super.setCreateDt(builder.createDt);
+        super.setLastModifiedDt(builder.lastModifiedDt);
     }
 
     /* Used by the mapper. */
@@ -266,6 +269,8 @@ public class UserVO extends AbstractBase<UserVO> implements Serializable {
         private @NotEmpty(groups = ValidationGroups.Create.class) List<EmailVO> emailAddresses;
         private List<String> roleNames;
         private long ol;
+        private Date createDt;
+        private Date lastModifiedDt;
 
         private Builder() {
         }
@@ -327,6 +332,16 @@ public class UserVO extends AbstractBase<UserVO> implements Serializable {
 
         public Builder ol(long val) {
             ol = val;
+            return this;
+        }
+
+        public Builder createDt(Date val) {
+            createDt = val;
+            return this;
+        }
+
+        public Builder lastModifiedDt(Date val) {
+            lastModifiedDt = val;
             return this;
         }
 

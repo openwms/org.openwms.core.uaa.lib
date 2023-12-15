@@ -20,9 +20,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.openwms.core.uaa.api.UserVO;
 import org.openwms.core.uaa.impl.Role;
 import org.openwms.core.uaa.impl.User;
-import org.openwms.core.uaa.api.UserVO;
 
 import java.util.Base64;
 import java.util.List;
@@ -45,6 +45,7 @@ public interface UserMapper {
     @Mapping(source = "externalUser", target = "extern")
     @Mapping(source = "roles", target = "roleNames")
     UserVO convertToVO(User eo);
+
     List<UserVO> convertToVO(List<User> eo);
 
     @Mapping(source = "pKey", target = "persistentKey")
