@@ -143,6 +143,8 @@ class GrantControllerDocumentation {
                                 fieldWithPath("links[].*").ignored(),
                                 fieldWithPath("ol").description("Versioning field to check the instance version"),
                                 fieldWithPath("pKey").description("The technical persistent identifier of the Grant"),
+                                fieldWithPath("createDt").description("The date the entity has been created"),
+                                fieldWithPath("lastModifiedDt").description("The last time the entity has been modified"),
                                 fieldWithPath("name").description("Unique name of the Grant"),
                                 fieldWithPath("description").description("A descriptive text for the Grant")
                         )
