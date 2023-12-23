@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.openwms.core.uaa.api.EmailVO;
 import org.openwms.core.uaa.api.UserDetailsVO;
 import org.openwms.core.uaa.api.UserVO;
-import org.openwms.core.uaa.impl.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -93,20 +92,18 @@ class UserMapperImplIT {
     void testVOtoEO() {
         // arrange
         var testee = new UserMapperImpl(new EmailMapperImpl(), new UserDetailsMapperImpl());
-        var vo = UserVO.newBuilder()
-                .pKey("pKey")
-                .ol(1)
-                .username("username")
-                .emailAddresses(List.of(new EmailVO("admin.private@acme.com", true), new EmailVO("admin@acme.com", false)))
-                .enabled(true)
-                .expirationDate(ZonedDateTime.now())
-                .extern(true)
-                .fullname("fullname")
-                .lastPasswordChange(ZonedDateTime.now())
-                .locked(true)
-                .roleNames(List.of("ADMIN"))
-                .userDetails(new UserDetailsVO())
-                .build();
+        var vo = new UserVO();
+        vo.setpKey("pKey");
+        vo.setUsername("username");
+        vo.setEmailAddresses(List.of(new EmailVO("admin.private@acme.com", true), new EmailVO("admin@acme.com", false)));
+        vo.setEnabled(true);
+        vo.setExpirationDate(ZonedDateTime.now());
+        vo.setExtern(true);
+        vo.setFullname("fullname");
+        vo.setLastPasswordChange(ZonedDateTime.now());
+        vo.setLocked(true);
+        vo.setRoleNames(List.of("ADMIN"));
+        vo.setUserDetails(new UserDetailsVO());
 
         // act
         var eo = testee.convertFrom(vo);

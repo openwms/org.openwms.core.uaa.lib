@@ -155,10 +155,8 @@ class UserControllerDocumentation {
 
     @Sql("classpath:test.sql")
     @Test void shall_create_user() throws Exception {
-        var vo = UserVO.newBuilder()
-                .username("admin2")
-                .emailAddresses(asList(new EmailVO("admin2@example.com", true)))
-                .build();
+        var vo = new UserVO("admin2");
+        vo.setEmailAddresses(asList(new EmailVO("admin2@example.com", true)));
 
         // CREATE a new User
         var result = mockMvc.perform(
@@ -190,10 +188,8 @@ class UserControllerDocumentation {
 
     @Sql("classpath:test.sql")
     @Test void shall_create_user_exists() throws Exception {
-        var vo = UserVO.newBuilder()
-                .username("tester")
-                .emailAddresses(List.of(new EmailVO("tester@example.com", true)))
-                .build();
+        var vo = new UserVO("tester");
+        vo.setEmailAddresses(List.of(new EmailVO("tester@example.com", true)));
 
         // Try again and validate the User already exists now
         mockMvc.perform(
@@ -210,11 +206,9 @@ class UserControllerDocumentation {
     @Sql("classpath:test.sql")
     @Test void shall_update_user() throws Exception {
         final String pKey = "96baa849-dd19-4b19-8c5e-895d3b7f405e";
-        var vo = UserVO.newBuilder()
-                .pKey(pKey)
-                .username("superuser")
-                .emailAddresses(List.of(new EmailVO("admin@example.com", true)))
-                .build();
+        var vo = new UserVO("superuser");
+        vo.setpKey(pKey);
+        vo.setEmailAddresses(List.of(new EmailVO("admin@example.com", true)));
         // MODIFY and SAVE the User
         vo.setLocked(true);
         vo.setEnabled(false);

@@ -29,7 +29,6 @@ import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -97,28 +96,9 @@ public class UserVO extends AbstractBase<UserVO> implements Serializable {
         // For Jackson and MapStruct usage
     }
 
-    private UserVO(Builder builder) {
-        pKey = builder.pKey;
-        username = builder.username;
-        extern = builder.extern;
-        lastPasswordChange = builder.lastPasswordChange;
-        locked = builder.locked;
-        enabled = builder.enabled;
-        expirationDate = builder.expirationDate;
-        fullname = builder.fullname;
-        userDetails = builder.userDetails;
-        emailAddresses = builder.emailAddresses;
-        roleNames = builder.roleNames;
-        super.setOl(builder.ol);
-        super.setCreateDt(builder.createDt);
-        super.setLastModifiedDt(builder.lastModifiedDt);
+    public UserVO(String username) {
+        this.username = username;
     }
-
-    /* Used by the mapper. */
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     /*~-------------------- accessors --------------------*/
     public String getpKey() {
         return pKey;
@@ -217,9 +197,8 @@ public class UserVO extends AbstractBase<UserVO> implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserVO)) return false;
+        if (!(o instanceof UserVO userVO)) return false;
         if (!super.equals(o)) return false;
-        UserVO userVO = (UserVO) o;
         return Objects.equals(pKey, userVO.pKey) && Objects.equals(username, userVO.username) && Objects.equals(extern, userVO.extern) && Objects.equals(lastPasswordChange, userVO.lastPasswordChange) && Objects.equals(locked, userVO.locked) && Objects.equals(enabled, userVO.enabled) && Objects.equals(expirationDate, userVO.expirationDate) && Objects.equals(fullname, userVO.fullname) && Objects.equals(userDetails, userVO.userDetails) && Objects.equals(emailAddresses, userVO.emailAddresses) && Objects.equals(roleNames, userVO.roleNames);
     }
 
@@ -253,100 +232,5 @@ public class UserVO extends AbstractBase<UserVO> implements Serializable {
                 .add("emailAddresses=" + emailAddresses)
                 .add("roleNames=" + roleNames)
                 .toString();
-    }
-
-    /*~-------------------- builder --------------------*/
-    public static final class Builder {
-        private String pKey;
-        private @NotEmpty(groups = ValidationGroups.Create.class) String username;
-        private Boolean extern;
-        private ZonedDateTime lastPasswordChange;
-        private Boolean locked;
-        private Boolean enabled;
-        private ZonedDateTime expirationDate;
-        private String fullname;
-        private @Valid UserDetailsVO userDetails;
-        private @NotEmpty(groups = ValidationGroups.Create.class) List<EmailVO> emailAddresses;
-        private List<String> roleNames;
-        private long ol;
-        private Date createDt;
-        private Date lastModifiedDt;
-
-        private Builder() {
-        }
-
-        public Builder pKey(String val) {
-            pKey = val;
-            return this;
-        }
-
-        public Builder username(@NotEmpty(groups = ValidationGroups.Create.class) String val) {
-            username = val;
-            return this;
-        }
-
-        public Builder extern(Boolean val) {
-            extern = val;
-            return this;
-        }
-
-        public Builder lastPasswordChange(ZonedDateTime val) {
-            lastPasswordChange = val;
-            return this;
-        }
-
-        public Builder locked(Boolean val) {
-            locked = val;
-            return this;
-        }
-
-        public Builder enabled(Boolean val) {
-            enabled = val;
-            return this;
-        }
-
-        public Builder expirationDate(ZonedDateTime val) {
-            expirationDate = val;
-            return this;
-        }
-
-        public Builder fullname(String val) {
-            fullname = val;
-            return this;
-        }
-
-        public Builder userDetails(@Valid UserDetailsVO val) {
-            userDetails = val;
-            return this;
-        }
-
-        public Builder emailAddresses(@NotEmpty(groups = ValidationGroups.Create.class) List<EmailVO> val) {
-            emailAddresses = val;
-            return this;
-        }
-
-        public Builder roleNames(List<String> val) {
-            roleNames = val;
-            return this;
-        }
-
-        public Builder ol(long val) {
-            ol = val;
-            return this;
-        }
-
-        public Builder createDt(Date val) {
-            createDt = val;
-            return this;
-        }
-
-        public Builder lastModifiedDt(Date val) {
-            lastModifiedDt = val;
-            return this;
-        }
-
-        public UserVO build() {
-            return new UserVO(this);
-        }
     }
 }

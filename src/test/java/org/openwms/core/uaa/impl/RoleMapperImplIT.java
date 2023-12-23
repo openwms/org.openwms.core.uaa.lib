@@ -19,7 +19,6 @@ import org.ameba.app.ValidationConfiguration;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.uaa.api.RoleVO;
 import org.openwms.core.uaa.api.UserVO;
-import org.openwms.core.uaa.impl.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -75,6 +74,7 @@ class RoleMapperImplIT {
     @Test
     void testVOtoEO() {
         // arrange
+        var user = new UserVO("user");
         var testee = new RoleMapperImpl(new UserMapperImpl(new EmailMapperImpl(), new UserDetailsMapperImpl()), new SecurityObjectMapperImpl());
         var vo = RoleVO.newBuilder()
                 .pKey("pKey")
@@ -82,7 +82,7 @@ class RoleMapperImplIT {
                 .name("name")
                 .description("description")
                 .immutable(true)
-                .users(Set.of(UserVO.newBuilder().username("user").build()))
+                .users(Set.of(user))
                 .grants(Set.of(RoleVO.newBuilder().name("name").build()))
                 .build();
 

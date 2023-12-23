@@ -19,10 +19,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.SubclassMapping;
-import org.openwms.core.uaa.impl.Role;
-import org.openwms.core.uaa.impl.SecurityObject;
 import org.openwms.core.uaa.api.RoleVO;
 import org.openwms.core.uaa.api.SecurityObjectVO;
+import org.openwms.core.uaa.impl.Role;
+import org.openwms.core.uaa.impl.SecurityObject;
 
 import java.util.List;
 
@@ -35,8 +35,10 @@ import java.util.List;
 public interface RoleMapper {
 
     @Mapping(source = "persistentKey", target = "pKey")
-    @Mapping(source = "ol", target = "ol")
+    @Mapping(source = "ol", target = "ol" )
+    @Mapping(source = "users", target = "users", qualifiedByName = "convertToVO")
     RoleVO convertToVO(Role eo);
+
     List<RoleVO> convertToVO(List<Role> eo);
 
     @Mapping(source = "pKey", target = "persistentKey")

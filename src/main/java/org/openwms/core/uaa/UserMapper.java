@@ -19,7 +19,10 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.SubclassMapping;
+import org.openwms.core.uaa.api.AuthenticatedUserVO;
 import org.openwms.core.uaa.api.UserVO;
 import org.openwms.core.uaa.impl.Role;
 import org.openwms.core.uaa.impl.User;
@@ -40,12 +43,22 @@ public interface UserMapper {
         return eo.getName();
     }
 
+    @Named("convertToVO")
+    @SubclassMapping(source = User.class, target = UserVO.class)
     @Mapping(source = "persistentKey", target = "pKey")
     @Mapping(source = "ol", target = "ol")
     @Mapping(source = "externalUser", target = "extern")
     @Mapping(source = "roles", target = "roleNames")
     UserVO convertToVO(User eo);
 
+    @Mapping(source = "persistentKey", target = "pKey")
+    @Mapping(source = "ol", target = "ol")
+    @Mapping(source = "externalUser", target = "extern")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "roles", target = "roleNames")
+    AuthenticatedUserVO convertToAuthenticatedUserVO(User eo);
+
+    @Named("convertToVO")
     List<UserVO> convertToVO(List<User> eo);
 
     @Mapping(source = "pKey", target = "persistentKey")
