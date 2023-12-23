@@ -128,7 +128,7 @@ class UserMapperImplIT {
 
     private static void assertEO(User eo) {
         assertThat(eo.getPersistentKey()).isNotBlank();
-        assertThat(eo.getOl()).isOne();
+        assertThat(eo.getOl()).isZero();
         assertThat(eo.getUsername()).isNotBlank();
         assertThat(eo.getFullname()).isNotBlank();
         assertThat(eo.isEnabled()).isTrue();

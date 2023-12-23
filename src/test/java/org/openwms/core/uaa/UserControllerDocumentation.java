@@ -167,7 +167,6 @@ class UserControllerDocumentation {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("links[]").ignored(),
-                                fieldWithPath("ol").ignored(),
                                 fieldWithPath("username").description("The unique name of the User in the system"),
                                 fieldWithPath("emailAddresses[]").description("The User's email addresses"),
                                 fieldWithPath("emailAddresses[].emailAddress").description("The actual email address"),
