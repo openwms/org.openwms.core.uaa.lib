@@ -563,16 +563,16 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/users/85d2bb58-3c24-48fb-86e2-dac6681bbbe5/
+Location: http://localhost:8080/users/9cb53d3e-4b27-44e2-9734-015a9c2d7e0b/
 Content-Type: application/vnd.openwms.uaa.user-v1+json
 Content-Length: 356
 
 {
   "links" : [ ],
   "ol" : 0,
-  "createDt" : 1708013999972,
-  "lastModifiedDt" : 1708013999972,
-  "pKey" : "85d2bb58-3c24-48fb-86e2-dac6681bbbe5",
+  "createDt" : 1710630210978,
+  "lastModifiedDt" : 1710630210978,
+  "pKey" : "9cb53d3e-4b27-44e2-9734-015a9c2d7e0b",
   "username" : "admin2",
   "externalUser" : false,
   "locked" : false,
@@ -631,7 +631,7 @@ Content-Length: 1622
   } ],
   "ol" : 1,
   "createDt" : "2020-06-22T19:02:47Z",
-  "lastModifiedDt" : "2024-02-15T16:20:02Z",
+  "lastModifiedDt" : "2024-03-16T23:03:33Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
   "username" : "jenkins",
   "externalUser" : true,
@@ -659,7 +659,7 @@ Content-Length: 1622
   } ],
   "ol" : 1,
   "createDt" : "2020-06-22T19:02:47Z",
-  "lastModifiedDt" : "2024-02-15T16:20:02Z",
+  "lastModifiedDt" : "2024-03-16T23:03:33Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "tester",
   "externalUser" : false,
@@ -686,16 +686,40 @@ Content-Length: 1622
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 1609
+Content-Length: 1622
 
 [ {
+  "links" : [ {
+    "rel" : "user-findbypkey",
+    "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405e"
+  } ],
+  "ol" : 1,
+  "createDt" : "2020-06-22T19:02:47Z",
+  "lastModifiedDt" : "2024-03-16T23:03:28Z",
+  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
+  "username" : "tester",
+  "externalUser" : false,
+  "lastPasswordChange" : "2020-06-22T19:02:47Z",
+  "locked" : false,
+  "enabled" : true,
+  "expirationDate" : "2020-06-23T19:02:45Z",
+  "fullname" : "Tester",
+  "details" : { },
+  "emailAddresses" : [ {
+    "emailAddress" : "tester@acme.com",
+    "primary" : true,
+    "fullname" : "Mr. Tester"
+  } ],
+  "roleNames" : [ ],
+  "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
+}, {
   "links" : [ {
     "rel" : "user-findbypkey",
     "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"
   } ],
   "ol" : 1,
   "createDt" : "2020-06-22T19:02:47Z",
-  "lastModifiedDt" : "2024-02-15T16:19:54Z",
+  "lastModifiedDt" : "2024-03-16T23:03:28Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
   "username" : "jenkins",
   "externalUser" : true,
@@ -714,31 +738,7 @@ Content-Length: 1609
     "primary" : false,
     "fullname" : "Mr. Jenkins"
   } ],
-  "roleNames" : [ ],
-  "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
-}, {
-  "links" : [ {
-    "rel" : "user-findbypkey",
-    "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405e"
-  } ],
-  "ol" : 1,
-  "createDt" : "2020-06-22T19:02:47Z",
-  "lastModifiedDt" : "2024-02-15T16:19:54Z",
-  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
-  "username" : "tester",
-  "externalUser" : false,
-  "lastPasswordChange" : "2020-06-22T19:02:47Z",
-  "locked" : false,
-  "enabled" : true,
-  "expirationDate" : "2020-06-23T19:02:45Z",
-  "fullname" : "Tester",
-  "details" : { },
-  "emailAddresses" : [ {
-    "emailAddress" : "tester@acme.com",
-    "primary" : true,
-    "fullname" : "Mr. Tester"
-  } ],
-  "roleNames" : [ ],
+  "roleNames" : [ "ROLE_ADMIN" ],
   "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
 } ]</code></pre>
 </div>
@@ -765,7 +765,7 @@ Host: localhost:8080</code></pre>
 Content-Type: application/vnd.openwms.uaa.user-v1+json
 Content-Length: 700
 
-{"links":[{"rel":"user-findbypkey","href":"http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"}],"ol":1,"createDt":1592852567404,"lastModifiedDt":1708014000016,"pKey":"96baa849-dd19-4b19-8c5e-895d3b7f405d","username":"jenkins","externalUser":true,"lastPasswordChange":"2020-06-22T19:02:47Z","locked":true,"enabled":true,"expirationDate":"2020-06-23T19:02:45Z","fullname":"Mister Jenkins","details":{},"emailAddresses":[{"emailAddress":"admin.private@acme.com","primary":true,"fullname":"Mr. Jenkins"},{"emailAddress":"admin@acme.com","primary":false,"fullname":"Mr. Jenkins"}],"roleNames":["ROLE_ADMIN"],"password":"{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"}</code></pre>
+{"links":[{"rel":"user-findbypkey","href":"http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"}],"ol":1,"createDt":1592852567404,"lastModifiedDt":1710630211017,"pKey":"96baa849-dd19-4b19-8c5e-895d3b7f405d","username":"jenkins","externalUser":true,"lastPasswordChange":"2020-06-22T19:02:47Z","locked":true,"enabled":true,"expirationDate":"2020-06-23T19:02:45Z","fullname":"Mister Jenkins","details":{},"emailAddresses":[{"emailAddress":"admin.private@acme.com","primary":true,"fullname":"Mr. Jenkins"},{"emailAddress":"admin@acme.com","primary":false,"fullname":"Mr. Jenkins"}],"roleNames":["ROLE_ADMIN"],"password":"{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"}</code></pre>
 </div>
 </div>
 </div>
@@ -801,7 +801,7 @@ Content-Length: 2092
     "links" : [ ],
     "ol" : 1,
     "createDt" : "2020-06-22T19:02:47Z",
-    "lastModifiedDt" : "2024-02-15T16:20:02Z",
+    "lastModifiedDt" : "2024-03-16T23:03:33Z",
     "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
     "username" : "jenkins",
     "externalUser" : true,
@@ -826,32 +826,32 @@ Content-Length: 2092
   "grants" : [ {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-02-15T16:20:02Z",
-    "lastModifiedDt" : "2024-02-15T16:20:02Z",
+    "createDt" : "2024-03-16T23:03:33Z",
+    "lastModifiedDt" : "2024-03-16T23:03:33Z",
     "pKey" : "5",
     "name" : "SEC_UAA_USER_MODIFY",
     "description" : "Permission to modify Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-02-15T16:20:02Z",
-    "lastModifiedDt" : "2024-02-15T16:20:02Z",
+    "createDt" : "2024-03-16T23:03:33Z",
+    "lastModifiedDt" : "2024-03-16T23:03:33Z",
     "pKey" : "4",
     "name" : "SEC_UAA_USER_CREATE",
     "description" : "Permission to create Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-02-15T16:20:02Z",
-    "lastModifiedDt" : "2024-02-15T16:20:02Z",
+    "createDt" : "2024-03-16T23:03:33Z",
+    "lastModifiedDt" : "2024-03-16T23:03:33Z",
     "pKey" : "3",
     "name" : "SEC_UAA_USER_LOOKUP",
     "description" : "Permission to find Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-02-15T16:20:02Z",
-    "lastModifiedDt" : "2024-02-15T16:20:02Z",
+    "createDt" : "2024-03-16T23:03:33Z",
+    "lastModifiedDt" : "2024-03-16T23:03:33Z",
     "pKey" : "6",
     "name" : "SEC_UAA_USER_DELETE",
     "description" : "Permission to delete Users"
@@ -910,7 +910,7 @@ Content-Length: 445
   "links" : [ ],
   "ol" : 0,
   "createDt" : 1592852567404,
-  "lastModifiedDt" : 1708013997491,
+  "lastModifiedDt" : 1710630208512,
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
@@ -956,11 +956,11 @@ Content-Length: 513
   "links" : [ ],
   "ol" : 3,
   "createDt" : 1592852567404,
-  "lastModifiedDt" : 1708013997557,
+  "lastModifiedDt" : 1710630208575,
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
-  "lastPasswordChange" : "2024-02-15T16:19:59Z",
+  "lastPasswordChange" : "2024-03-16T23:03:30Z",
   "locked" : true,
   "enabled" : false,
   "details" : { },
@@ -969,7 +969,7 @@ Content-Length: 513
     "primary" : true
   } ],
   "roleNames" : [ ],
-  "password" : "{bcrypt}$2a$04$3lsc1r/NKkvdcExwOe27xO1dgg.sjUDYhSYp/OnZZWyrjpDhhGHvi"
+  "password" : "{bcrypt}$2a$04$bipoG5TrNJqkA94HKkAQfuvUgxXEZqtXdXr/VscfqWLKoBA3KVJwa"
 }</code></pre>
 </div>
 </div>
@@ -1023,7 +1023,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-15 16:15:54 UTC
+Last updated 2024-03-16 23:01:39 UTC
 </div>
 </div>
 </body>
