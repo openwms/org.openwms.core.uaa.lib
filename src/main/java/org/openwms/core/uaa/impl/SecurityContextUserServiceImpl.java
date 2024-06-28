@@ -15,9 +15,9 @@
  */
 package org.openwms.core.uaa.impl;
 
-import net.sf.ehcache.Ehcache;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
+import org.ehcache.core.Ehcache;
 import org.openwms.core.uaa.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +67,7 @@ class SecurityContextUserServiceImpl implements UserDetailsService, ApplicationL
     @Override
     public void onApplicationEvent(UserEvent event) {
         if (cache != null) {
-            cache.removeAll();
+            cache.clear();
         }
     }
 

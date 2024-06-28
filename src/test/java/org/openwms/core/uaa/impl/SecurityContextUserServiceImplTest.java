@@ -20,8 +20,8 @@
  */
 package org.openwms.core.uaa.impl;
 
-import net.sf.ehcache.Ehcache;
 import org.assertj.core.api.Assertions;
+import org.ehcache.core.Ehcache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -68,7 +68,7 @@ class SecurityContextUserServiceImplTest {
 
     @Test final void testOnApplicationEventWithCache() {
         srv.onApplicationEvent(new UserEvent(new User("test"), UserEvent.EventType.CREATED));
-        verify(cache).removeAll();
+        verify(cache).clear();
     }
 
     @Test final void testLoadUserByUsernameFromCache() {
