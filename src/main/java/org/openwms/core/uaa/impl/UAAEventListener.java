@@ -15,9 +15,12 @@
  */
 package org.openwms.core.uaa.impl;
 
+import org.ameba.annotation.Measured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
@@ -30,7 +33,9 @@ class UAAEventListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UAAEventListener.class);
 
+    @Measured
     @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onPickOrderPositionSplitEvent(UserEvent event) {
         var user = event.getSource();
         user.wipePassword();

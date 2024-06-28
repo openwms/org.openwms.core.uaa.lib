@@ -105,7 +105,6 @@ class RoleMapperImplIT {
 
     private static void assertRole(Role eo) {
         assertThat(eo.getPersistentKey()).isNotBlank();
-        assertThat(eo.getOl()).isOne();
         assertThat(eo.getName()).isNotBlank();
         assertThat(eo.getDescription()).isNotBlank();
         assertThat(eo.getImmutable()).isTrue();
