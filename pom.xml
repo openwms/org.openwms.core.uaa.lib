@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>25</version>
+        <version>26</version>
         <relativePath />
     </parent>
     <artifactId>org.openwms.core.uaa.lib</artifactId>
@@ -54,7 +54,7 @@
 
     <ciManagement>
         <system>GitHub</system>
-		<url>https://github.com/openwms/${project.artifactId}/actions</url>
+        <url>https://github.com/openwms/${project.artifactId}/actions</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
@@ -66,11 +66,10 @@
     </ciManagement>
 
     <properties>
-        <ameba-lib.version>3.1-SNAPSHOT</ameba-lib.version>
-        <core.version>2.1.0-SNAPSHOT</core.version>
+        <core.version>3.0.0-SNAPSHOT</core.version>
+        <ehcache.version>3.10.8</ehcache.version>
         <guava.version>32.0.0-jre</guava.version>
-        <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2023.0.1</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -148,7 +147,7 @@
                     </execution>
                 </executions>
             </plugin>
-			<plugin>
+            <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
             </plugin>
@@ -158,21 +157,15 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.interface21</groupId>
-                <artifactId>ameba-lib</artifactId>
-                <version>${ameba-lib.version}</version>
-            </dependency>
-            <dependency>
-                <!-- Clash in org.springframework.cloud:spring-cloud-starter-netflix-eureka-client -->
+				<!-- Clash in spring-cloud-starter-netflix-eureka-client -->
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
-                <!-- Clash in org.springframework.cloud:spring-cloud-starter-netflix-eureka-client -->
-                <groupId>com.netflix.servo</groupId>
-                <artifactId>servo-core</artifactId>
-                <version>${servo-core.version}</version>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
@@ -252,16 +245,6 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-            <optional>true</optional>
-        </dependency>
 
         <!-- Observability: Monitoring -->
         <dependency>
@@ -312,7 +295,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
+            <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <optional>true</optional>
         </dependency>
