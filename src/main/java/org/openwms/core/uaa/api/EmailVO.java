@@ -18,8 +18,8 @@ package org.openwms.core.uaa.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 import java.util.Objects;

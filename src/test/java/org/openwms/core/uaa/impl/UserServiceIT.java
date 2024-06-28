@@ -21,6 +21,8 @@
  */
 package org.openwms.core.uaa.impl;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.ameba.app.ValidationConfiguration;
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
@@ -30,8 +32,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openwms.core.TestBase;
 import org.openwms.core.uaa.UserMapper;
 import org.openwms.core.uaa.UserService;
-import org.openwms.core.uaa.impl.User;
-import org.openwms.core.uaa.impl.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -48,9 +48,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
-
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

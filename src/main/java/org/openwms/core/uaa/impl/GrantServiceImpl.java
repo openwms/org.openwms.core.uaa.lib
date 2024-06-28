@@ -15,6 +15,9 @@
  */
 package org.openwms.core.uaa.impl;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
@@ -25,9 +28,6 @@ import org.openwms.core.uaa.api.ValidationGroups;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static org.openwms.core.uaa.MessageCodes.GRANT_WITH_NAME_ALREADY_EXISTS;

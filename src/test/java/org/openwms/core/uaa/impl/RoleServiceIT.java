@@ -21,6 +21,8 @@
  */
 package org.openwms.core.uaa.impl;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.ameba.app.ValidationConfiguration;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
@@ -44,9 +46,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
-
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -15,20 +15,20 @@
  */
 package org.openwms.core.uaa.impl;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
 import org.ameba.annotation.Default;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.core.uaa.api.ValidationGroups;
 import org.openwms.core.values.CoreTypeDefinitions;
 import org.springframework.util.Assert;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**

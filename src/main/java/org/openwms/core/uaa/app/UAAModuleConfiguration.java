@@ -16,6 +16,8 @@
 package org.openwms.core.uaa.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.servlet.Filter;
+import jakarta.validation.Validator;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
@@ -41,8 +43,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import javax.servlet.Filter;
-import javax.validation.Validator;
 import java.util.Locale;
 
 /**

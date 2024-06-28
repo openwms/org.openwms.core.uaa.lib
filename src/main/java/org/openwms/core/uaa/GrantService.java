@@ -15,12 +15,12 @@
  */
 package org.openwms.core.uaa;
 
-import org.openwms.core.uaa.impl.Grant;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.openwms.core.uaa.api.ValidationGroups;
+import org.openwms.core.uaa.impl.Grant;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**

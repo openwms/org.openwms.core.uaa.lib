@@ -15,6 +15,7 @@
  */
 package org.openwms.core.uaa;
 
+import jakarta.validation.ConstraintViolationException;
 import org.ameba.aop.ServiceLayerAspect;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.exception.ServiceLayerException;
@@ -22,7 +23,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
 /**

@@ -15,16 +15,16 @@
  */
 package org.openwms.core.uaa.impl;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Lob;
 import org.openwms.core.values.CoreTypeDefinitions;
 import org.openwms.core.values.ImageProvider;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.StringJoiner;

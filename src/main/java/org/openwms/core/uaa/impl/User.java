@@ -15,6 +15,19 @@
  */
 package org.openwms.core.uaa.impl;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotEmpty;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.core.uaa.InvalidPasswordException;
 import org.openwms.core.uaa.app.DefaultTimeProvider;
@@ -23,19 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -46,9 +46,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.REFRESH;
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.REFRESH;
 
 /**
  * An User represents a human user of the system. Typically an User is assigned to one or more {@code Roles} to define security constraints.
@@ -167,6 +167,11 @@ public class User extends ApplicationEntity implements Serializable {
     @Override
     public void setPersistentKey(String pKey) {
         super.setPersistentKey(pKey);
+    }
+
+    @Override
+    public void setOl(long ol) {
+        super.setOl(ol);
     }
 
     /**
