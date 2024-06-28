@@ -58,8 +58,8 @@ class UAASecurityConfiguration {
         var encoders = new HashMap<String, PasswordEncoder>();
         encoders.put("bcrypt", new BCryptPasswordEncoder(strength));
         encoders.put("noop", NoOpPasswordEncoder.getInstance());
-        encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
-        encoders.put("scrypt", new SCryptPasswordEncoder());
+        encoders.put("pbkdf2", Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8());
+        encoders.put("scrypt", SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8());
         return new DelegatingPasswordEncoder("bcrypt", encoders);
     }
 }
