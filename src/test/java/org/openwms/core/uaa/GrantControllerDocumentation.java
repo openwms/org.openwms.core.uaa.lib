@@ -141,10 +141,10 @@ class GrantControllerDocumentation {
                                 fieldWithPath("@class").description("Type identifier of the Grant type"),
                                 fieldWithPath("links[]").description("Contains an array of hypermedia resource links"),
                                 fieldWithPath("links[].*").ignored(),
-                                fieldWithPath("ol").description("Versioning field to check the instance version"),
+                                fieldWithPath("ol").description("Technical versioning field to check the instance version"),
                                 fieldWithPath("pKey").description("The technical persistent identifier of the Grant"),
-                                fieldWithPath("createDt").description("The date the entity has been created"),
-                                fieldWithPath("lastModifiedDt").description("The last time the entity has been modified"),
+                                fieldWithPath("createDt").description("When the record has been created"),
+                                fieldWithPath("lastModifiedDt").description("Timestamp when the record has been updated the last time"),
                                 fieldWithPath("name").description("Unique name of the Grant"),
                                 fieldWithPath("description").description("A descriptive text for the Grant")
                         )
