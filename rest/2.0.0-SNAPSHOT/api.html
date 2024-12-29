@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="(2.0.0-SNAPSHOT-11)">
+<meta name="author" content="(2.0.0-SNAPSHOT-14)">
 <title>OpenWMS.org WMS: RESTful API (UAA)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (UAA)</h1>
 <div class="details">
-<span id="author" class="author">(2.0.0-SNAPSHOT-11)</span><br>
+<span id="author" class="author">(2.0.0-SNAPSHOT-14)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -880,16 +880,15 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/users/76bb13c0-0a4a-4d2d-92c8-ba1a51ed7f2b
+Location: http://localhost:8080/users/71b09d40-b416-48f1-8e40-ff046a521a09
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 394
+Content-Length: 377
 
 {
-  "links" : [ ],
   "ol" : 0,
-  "createDt" : "2024-09-28T21:10:14.244523962Z",
-  "lastModifiedDt" : "2024-09-28T21:10:14.244523962Z",
-  "pKey" : "76bb13c0-0a4a-4d2d-92c8-ba1a51ed7f2b",
+  "createDt" : "2024-12-29T10:24:02.340319343Z",
+  "lastModifiedDt" : "2024-12-29T10:24:02.340319343Z",
+  "pKey" : "71b09d40-b416-48f1-8e40-ff046a521a09",
   "username" : "admin2",
   "externalUser" : false,
   "locked" : false,
@@ -948,7 +947,7 @@ Content-Length: 1662
   } ],
   "ol" : 1,
   "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:16.744696000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:04.863016000Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
   "username" : "jenkins",
   "externalUser" : true,
@@ -976,7 +975,7 @@ Content-Length: 1662
   } ],
   "ol" : 1,
   "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:16.744696000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:04.863016000Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "tester",
   "externalUser" : false,
@@ -1003,61 +1002,9 @@ Content-Length: 1662
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 1662
+Content-Length: 3
 
-[ {
-  "links" : [ {
-    "rel" : "user-findbypkey",
-    "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"
-  } ],
-  "ol" : 1,
-  "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.846774000Z",
-  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
-  "username" : "jenkins",
-  "externalUser" : true,
-  "lastPasswordChange" : "2020-06-22T19:02:47Z",
-  "locked" : true,
-  "enabled" : true,
-  "expirationDate" : "2020-06-23T19:02:45Z",
-  "fullname" : "Mister Jenkins",
-  "details" : { },
-  "emailAddresses" : [ {
-    "emailAddress" : "admin.private@acme.com",
-    "primary" : true,
-    "fullname" : "Mr. Jenkins"
-  }, {
-    "emailAddress" : "admin@acme.com",
-    "primary" : false,
-    "fullname" : "Mr. Jenkins"
-  } ],
-  "roleNames" : [ "ROLE_ADMIN" ],
-  "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
-}, {
-  "links" : [ {
-    "rel" : "user-findbypkey",
-    "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405e"
-  } ],
-  "ol" : 1,
-  "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.846774000Z",
-  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
-  "username" : "tester",
-  "externalUser" : false,
-  "lastPasswordChange" : "2020-06-22T19:02:47Z",
-  "locked" : false,
-  "enabled" : true,
-  "expirationDate" : "2020-06-23T19:02:45Z",
-  "fullname" : "Tester",
-  "details" : { },
-  "emailAddresses" : [ {
-    "emailAddress" : "tester@acme.com",
-    "primary" : true,
-    "fullname" : "Mr. Tester"
-  } ],
-  "roleNames" : [ ],
-  "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
-} ]</code></pre>
+[ ]</code></pre>
 </div>
 </div>
 </div>
@@ -1080,9 +1027,38 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 738
+Content-Length: 892
 
-{"links":[{"rel":"user-findbypkey","href":"http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"}],"ol":1,"createDt":"2020-06-22T19:02:47.404000000Z","lastModifiedDt":"2024-09-28T21:10:14.309862000Z","pKey":"96baa849-dd19-4b19-8c5e-895d3b7f405d","username":"jenkins","externalUser":true,"lastPasswordChange":"2020-06-22T19:02:47Z","locked":true,"enabled":true,"expirationDate":"2020-06-23T19:02:45Z","fullname":"Mister Jenkins","details":{},"emailAddresses":[{"emailAddress":"admin.private@acme.com","primary":true,"fullname":"Mr. Jenkins"},{"emailAddress":"admin@acme.com","primary":false,"fullname":"Mr. Jenkins"}],"roleNames":["ROLE_ADMIN"],"password":"{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"}</code></pre>
+{
+  "_links" : {
+    "user-findbypkey" : {
+      "href" : "http://localhost:8080/users/96baa849-dd19-4b19-8c5e-895d3b7f405d"
+    }
+  },
+  "ol" : 1,
+  "createDt" : "2020-06-22T19:02:47.404000000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:02.425278000Z",
+  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
+  "username" : "jenkins",
+  "externalUser" : true,
+  "lastPasswordChange" : "2020-06-22T19:02:47Z",
+  "locked" : true,
+  "enabled" : true,
+  "expirationDate" : "2020-06-23T19:02:45Z",
+  "fullname" : "Mister Jenkins",
+  "details" : { },
+  "emailAddresses" : [ {
+    "emailAddress" : "admin.private@acme.com",
+    "primary" : true,
+    "fullname" : "Mr. Jenkins"
+  }, {
+    "emailAddress" : "admin@acme.com",
+    "primary" : false,
+    "fullname" : "Mr. Jenkins"
+  } ],
+  "roleNames" : [ "ROLE_ADMIN" ],
+  "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1118,7 +1094,7 @@ Content-Length: 2192
     "links" : [ ],
     "ol" : 1,
     "createDt" : "2020-06-22T19:02:47.404000000Z",
-    "lastModifiedDt" : "2024-09-28T21:10:16.825047000Z",
+    "lastModifiedDt" : "2024-12-29T10:24:04.940627000Z",
     "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
     "username" : "jenkins",
     "externalUser" : true,
@@ -1143,32 +1119,32 @@ Content-Length: 2192
   "grants" : [ {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-09-28T21:10:16.825047000Z",
-    "lastModifiedDt" : "2024-09-28T21:10:16.825047000Z",
+    "createDt" : "2024-12-29T10:24:04.940627000Z",
+    "lastModifiedDt" : "2024-12-29T10:24:04.940627000Z",
     "pKey" : "5",
     "name" : "SEC_UAA_USER_MODIFY",
     "description" : "Permission to modify Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-09-28T21:10:16.825047000Z",
-    "lastModifiedDt" : "2024-09-28T21:10:16.825047000Z",
+    "createDt" : "2024-12-29T10:24:04.940627000Z",
+    "lastModifiedDt" : "2024-12-29T10:24:04.940627000Z",
     "pKey" : "4",
     "name" : "SEC_UAA_USER_CREATE",
     "description" : "Permission to create Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-09-28T21:10:16.825047000Z",
-    "lastModifiedDt" : "2024-09-28T21:10:16.825047000Z",
+    "createDt" : "2024-12-29T10:24:04.940627000Z",
+    "lastModifiedDt" : "2024-12-29T10:24:04.940627000Z",
     "pKey" : "3",
     "name" : "SEC_UAA_USER_LOOKUP",
     "description" : "Permission to find Users"
   }, {
     "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
     "ol" : 1,
-    "createDt" : "2024-09-28T21:10:16.825047000Z",
-    "lastModifiedDt" : "2024-09-28T21:10:16.825047000Z",
+    "createDt" : "2024-12-29T10:24:04.940627000Z",
+    "lastModifiedDt" : "2024-12-29T10:24:04.940627000Z",
     "pKey" : "6",
     "name" : "SEC_UAA_USER_DELETE",
     "description" : "Permission to delete Users"
@@ -1221,13 +1197,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 483
+Content-Length: 466
 
 {
-  "links" : [ ],
   "ol" : 0,
   "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:11.095523000Z",
+  "lastModifiedDt" : "2024-12-29T10:23:59.753995000Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
@@ -1267,17 +1242,16 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.user-v1+json
-Content-Length: 551
+Content-Length: 534
 
 {
-  "links" : [ ],
   "ol" : 3,
   "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:11.219064000Z",
+  "lastModifiedDt" : "2024-12-29T10:23:59.893734000Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405e",
   "username" : "superuser",
   "externalUser" : false,
-  "lastPasswordChange" : "2024-09-28T21:10:14Z",
+  "lastPasswordChange" : "2024-12-29T10:24:02Z",
   "locked" : true,
   "enabled" : false,
   "details" : { },
@@ -1286,7 +1260,7 @@ Content-Length: 551
     "primary" : true
   } ],
   "roleNames" : [ ],
-  "password" : "{bcrypt}$2a$04$PtnoxZD/wJqBCjKgR3ZD7uMTPnC5ssO6cZwjOcgSxc8tUAGTUVJgm"
+  "password" : "{bcrypt}$2a$04$IZz72n7nZMpZx5F8HCoSvu8JDt2A.xA88MU.b5JQ17M0qD.I/UeAa"
 }</code></pre>
 </div>
 </div>
@@ -1462,24 +1436,25 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/roles/292ab6cb-89fe-4520-a865-6836535c4e1d
+Location: http://localhost:8080/roles/caf0605c-6061-41aa-9cf7-688fbfd019b1
 Content-Type: application/vnd.openwms.uaa.role-v1+json
-Content-Length: 554
+Content-Length: 548
 
 {
   "@class" : "org.openwms.core.uaa.api.RoleVO",
-  "links" : [ {
-    "rel" : "users",
-    "href" : "http://localhost:8080/roles/292ab6cb-89fe-4520-a865-6836535c4e1d/users"
-  }, {
-    "rel" : "grants",
-    "href" : "http://localhost:8080/roles/292ab6cb-89fe-4520-a865-6836535c4e1d/grants"
-  }, {
-    "rel" : "role-findbypkey",
-    "href" : "http://localhost:8080/roles/292ab6cb-89fe-4520-a865-6836535c4e1d"
-  } ],
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/caf0605c-6061-41aa-9cf7-688fbfd019b1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/caf0605c-6061-41aa-9cf7-688fbfd019b1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/caf0605c-6061-41aa-9cf7-688fbfd019b1"
+    }
+  },
   "ol" : 0,
-  "pKey" : "292ab6cb-89fe-4520-a865-6836535c4e1d",
+  "pKey" : "caf0605c-6061-41aa-9cf7-688fbfd019b1",
   "name" : "ROLE_DEV",
   "description" : "Developers",
   "immutable" : true
@@ -1577,20 +1552,21 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.role-v1+json
-Content-Length: 421
+Content-Length: 415
 
 {
   "@class" : "org.openwms.core.uaa.api.RoleVO",
-  "links" : [ {
-    "rel" : "users",
-    "href" : "http://localhost:8080/roles/1/users"
-  }, {
-    "rel" : "grants",
-    "href" : "http://localhost:8080/roles/1/grants"
-  }, {
-    "rel" : "role-findbypkey",
-    "href" : "http://localhost:8080/roles/1"
-  } ],
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
   "ol" : 1,
   "pKey" : "1",
   "name" : "ROLE_ADMIN",
@@ -1625,7 +1601,7 @@ Content-Length: 779
   "links" : [ ],
   "ol" : 1,
   "createDt" : "2020-06-22T19:02:47.404000000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:17.006084000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.055128000Z",
   "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
   "username" : "jenkins",
   "externalUser" : true,
@@ -1674,32 +1650,32 @@ Content-Length: 1104
 [ {
   "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:17.082937000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:17.082937000Z",
+  "createDt" : "2024-12-29T10:24:05.125951000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.125951000Z",
   "pKey" : "5",
   "name" : "SEC_UAA_USER_MODIFY",
   "description" : "Permission to modify Users"
 }, {
   "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:17.082937000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:17.082937000Z",
+  "createDt" : "2024-12-29T10:24:05.125951000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.125951000Z",
   "pKey" : "4",
   "name" : "SEC_UAA_USER_CREATE",
   "description" : "Permission to create Users"
 }, {
   "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:17.082937000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:17.082937000Z",
+  "createDt" : "2024-12-29T10:24:05.125951000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.125951000Z",
   "pKey" : "3",
   "name" : "SEC_UAA_USER_LOOKUP",
   "description" : "Permission to find Users"
 }, {
   "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:17.082937000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:17.082937000Z",
+  "createDt" : "2024-12-29T10:24:05.125951000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.125951000Z",
   "pKey" : "6",
   "name" : "SEC_UAA_USER_DELETE",
   "description" : "Permission to delete Users"
@@ -1778,20 +1754,21 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.role-v1+json
-Content-Length: 425
+Content-Length: 419
 
 {
   "@class" : "org.openwms.core.uaa.api.RoleVO",
-  "links" : [ {
-    "rel" : "users",
-    "href" : "http://localhost:8080/roles/1/users"
-  }, {
-    "rel" : "grants",
-    "href" : "http://localhost:8080/roles/1/grants"
-  }, {
-    "rel" : "role-findbypkey",
-    "href" : "http://localhost:8080/roles/1"
-  } ],
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
   "ol" : 1,
   "pKey" : "1",
   "name" : "ROLE_SUPER",
@@ -1837,20 +1814,21 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.role-v1+json
-Content-Length: 421
+Content-Length: 415
 
 {
   "@class" : "org.openwms.core.uaa.api.RoleVO",
-  "links" : [ {
-    "rel" : "users",
-    "href" : "http://localhost:8080/roles/1/users"
-  }, {
-    "rel" : "grants",
-    "href" : "http://localhost:8080/roles/1/grants"
-  }, {
-    "rel" : "role-findbypkey",
-    "href" : "http://localhost:8080/roles/1"
-  } ],
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
   "ol" : 1,
   "pKey" : "1",
   "name" : "ROLE_ADMIN",
@@ -1897,20 +1875,21 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.uaa.role-v1+json
-Content-Length: 421
+Content-Length: 415
 
 {
   "@class" : "org.openwms.core.uaa.api.RoleVO",
-  "links" : [ {
-    "rel" : "users",
-    "href" : "http://localhost:8080/roles/1/users"
-  }, {
-    "rel" : "grants",
-    "href" : "http://localhost:8080/roles/1/grants"
-  }, {
-    "rel" : "role-findbypkey",
-    "href" : "http://localhost:8080/roles/1"
-  } ],
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
   "ol" : 1,
   "pKey" : "1",
   "name" : "ROLE_ADMIN",
@@ -2061,20 +2040,21 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/grants/32dd1220-a910-4602-ba4a-d16254478a77
+Location: http://localhost:8080/grants/c85ea2de-0cb9-4e15-9e29-d82011808881
 Content-Type: application/vnd.openwms.uaa.grant-v1+json
 Content-Length: 435
 
 {
   "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/32dd1220-a910-4602-ba4a-d16254478a77"
-  } ],
+  "_links" : {
+    "grant-findbypkey" : {
+      "href" : "http://localhost:8080/grants/c85ea2de-0cb9-4e15-9e29-d82011808881"
+    }
+  },
   "ol" : 0,
-  "createDt" : "2024-09-28T21:10:05.364615521Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.364615521Z",
-  "pKey" : "32dd1220-a910-4602-ba4a-d16254478a77",
+  "createDt" : "2024-12-29T10:24:05.459654326Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.459654326Z",
+  "pKey" : "c85ea2de-0cb9-4e15-9e29-d82011808881",
   "name" : "VIEW_USERS",
   "description" : "Permission to view all users in UI"
 }</code></pre>
@@ -2124,8 +2104,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/3"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.620877000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.620877000Z",
+  "createDt" : "2024-12-29T10:24:05.487801000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.487801000Z",
   "pKey" : "3",
   "name" : "SEC_UAA_USER_LOOKUP",
   "description" : "Permission to find Users"
@@ -2136,8 +2116,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/4"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.620877000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.620877000Z",
+  "createDt" : "2024-12-29T10:24:05.487801000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.487801000Z",
   "pKey" : "4",
   "name" : "SEC_UAA_USER_CREATE",
   "description" : "Permission to create Users"
@@ -2148,8 +2128,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/5"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.620877000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.620877000Z",
+  "createDt" : "2024-12-29T10:24:05.487801000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.487801000Z",
   "pKey" : "5",
   "name" : "SEC_UAA_USER_MODIFY",
   "description" : "Permission to modify Users"
@@ -2160,8 +2140,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/6"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.620877000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.620877000Z",
+  "createDt" : "2024-12-29T10:24:05.487801000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.487801000Z",
   "pKey" : "6",
   "name" : "SEC_UAA_USER_DELETE",
   "description" : "Permission to delete Users"
@@ -2189,13 +2169,14 @@ Content-Length: 364
 
 {
   "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/3"
-  } ],
+  "_links" : {
+    "grant-findbypkey" : {
+      "href" : "http://localhost:8080/grants/3"
+    }
+  },
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.735445000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.735445000Z",
+  "createDt" : "2024-12-29T10:24:05.537901000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.537901000Z",
   "pKey" : "3",
   "name" : "SEC_UAA_USER_LOOKUP",
   "description" : "Permission to find Users"
@@ -2220,11 +2201,6 @@ Content-Length: 364
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@class</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Type identifier of the Grant type</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>links[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Contains an array of hypermedia resource links</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ol</code></p></td>
@@ -2288,8 +2264,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/5"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.792901000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.792901000Z",
+  "createDt" : "2024-12-29T10:24:05.564046000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.564046000Z",
   "pKey" : "5",
   "name" : "SEC_UAA_USER_MODIFY",
   "description" : "Permission to modify Users"
@@ -2300,8 +2276,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/4"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.792901000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.792901000Z",
+  "createDt" : "2024-12-29T10:24:05.564046000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.564046000Z",
   "pKey" : "4",
   "name" : "SEC_UAA_USER_CREATE",
   "description" : "Permission to create Users"
@@ -2312,8 +2288,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/3"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.792901000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.792901000Z",
+  "createDt" : "2024-12-29T10:24:05.564046000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.564046000Z",
   "pKey" : "3",
   "name" : "SEC_UAA_USER_LOOKUP",
   "description" : "Permission to find Users"
@@ -2324,8 +2300,8 @@ Content-Length: 1472
     "href" : "http://localhost:8080/grants/6"
   } ],
   "ol" : 1,
-  "createDt" : "2024-09-28T21:10:05.792901000Z",
-  "lastModifiedDt" : "2024-09-28T21:10:05.792901000Z",
+  "createDt" : "2024-12-29T10:24:05.564046000Z",
+  "lastModifiedDt" : "2024-12-29T10:24:05.564046000Z",
   "pKey" : "6",
   "name" : "SEC_UAA_USER_DELETE",
   "description" : "Permission to delete Users"
@@ -2362,7 +2338,7 @@ Content-Length: 121
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-09-28 21:03:56 UTC
+Last updated 2024-12-29 10:20:54 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
