@@ -139,8 +139,8 @@ class GrantControllerDocumentation {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("@class").description("Type identifier of the Grant type"),
-                                fieldWithPath("links[]").description("Contains an array of hypermedia resource links"),
-                                fieldWithPath("links[].*").ignored(),
+                                fieldWithPath("_links").ignored(),
+                                fieldWithPath("_links.grant-findbypkey.*").ignored(),
                                 fieldWithPath("ol").description("Technical versioning field to check the instance version"),
                                 fieldWithPath("pKey").description("The technical persistent identifier of the Grant"),
                                 fieldWithPath("createDt").description("When the record has been created"),
