@@ -1,6 +1,6 @@
 /*
  * openwms.org, the Open Warehouse Management System.
- * Copyright (C) 2014 Heiko Scherrer
+ * Copyright (C) 2025 Heiko Scherrer
  *
  * This file is part of openwms.org.
  *
@@ -22,9 +22,6 @@
 package org.openwms.core.uaa.impl;
 
 import org.junit.jupiter.api.Test;
-import org.openwms.core.uaa.impl.Grant;
-import org.openwms.core.uaa.impl.Role;
-import org.openwms.core.uaa.impl.User;
 
 import java.util.Collections;
 import java.util.HashSet;
