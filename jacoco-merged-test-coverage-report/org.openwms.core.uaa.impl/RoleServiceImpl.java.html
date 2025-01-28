@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoleServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.impl</a> &gt; <span class="el_source">RoleServiceImpl.java</span></div><h1>RoleServiceImpl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.uaa.impl;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.ameba.annotation.Measured;
+import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
+import org.ameba.exception.ResourceExistsException;
+import org.ameba.i18n.Translator;
+import org.openwms.core.uaa.RoleMapper;
+import org.openwms.core.uaa.RoleService;
+import org.openwms.core.uaa.UserService;
+import org.openwms.core.uaa.api.RoleVO;
+import org.openwms.core.uaa.api.ValidationGroups;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.String.format;
+import static org.openwms.core.uaa.MessageCodes.ROLE_WITH_PKEY_NOT_EXIST;
+
+/**
+ * A RoleServiceImpl is a Spring managed transactional service that deals with {@link Role}s.
+ *
+ * @author Heiko Scherrer
+ */
+@TxService
+class RoleServiceImpl implements RoleService {
+
+<span class="fc" id="L50">    private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);</span>
+    private final RoleRepository repository;
+    private final UserService userService;
+    private final RoleMapper mapper;
+    private final Translator translator;
+    private final ApplicationEventPublisher eventPublisher;
+
+<span class="fc" id="L57">    RoleServiceImpl(RoleRepository repository, UserService userService, RoleMapper mapper, Translator translator, ApplicationEventPublisher eventPublisher) {</span>
+<span class="fc" id="L58">        this.repository = repository;</span>
+<span class="fc" id="L59">        this.userService = userService;</span>
+<span class="fc" id="L60">        this.mapper = mapper;</span>
+<span class="fc" id="L61">        this.translator = translator;</span>
+<span class="fc" id="L62">        this.eventPublisher = eventPublisher;</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull List&lt;RoleVO&gt; findAll() {
+<span class="fc" id="L71">        return mapper.convertToVO(repository.findAll());</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull RoleVO findByPKey(@NotBlank String pKey) {
+<span class="fc" id="L80">        return mapper.convertToVO(findByPKeyInternal(pKey));</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull List&lt;Role&gt; findByNames(@NotNull List&lt;String&gt; roleNames) {
+<span class="fc" id="L89">        var allRoles = repository.findByNameIn(roleNames);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        return allRoles == null ? new ArrayList&lt;&gt;(0) : allRoles;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    @Validated(ValidationGroups.Create.class)
+    public @NotNull RoleVO create(@NotNull(groups = ValidationGroups.Create.class) @Valid RoleVO role) {
+<span class="fc" id="L100">        var newRole = mapper.convertFrom(role);</span>
+<span class="fc" id="L101">        newRole.setName(role.getName());</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (repository.findByName(newRole.getName()).isPresent()) {</span>
+<span class="fc" id="L103">            throw new ResourceExistsException(format(&quot;Role with name [%s] already exists&quot;, role.getName()));</span>
+        }
+<span class="fc" id="L105">        newRole = repository.save(newRole);</span>
+<span class="fc" id="L106">        eventPublisher.publishEvent(new RoleEvent(newRole, RoleEvent.EventType.CREATED));</span>
+<span class="fc" id="L107">        LOGGER.debug(&quot;Created Role [{}]&quot;, newRole);</span>
+<span class="fc" id="L108">        return mapper.convertToVO(newRole);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    @Validated(ValidationGroups.Modify.class)
+    public @NotNull RoleVO save(@NotBlank String pKey, @NotNull(groups = ValidationGroups.Modify.class) @Valid RoleVO role) {
+<span class="fc" id="L118">        var existingRole = findByPKeyInternal(pKey);</span>
+<span class="fc" id="L119">        existingRole.setName(role.getName());</span>
+<span class="fc" id="L120">        existingRole.setDescription(role.getDescription());</span>
+<span class="fc" id="L121">        existingRole = repository.save(existingRole);</span>
+<span class="fc" id="L122">        eventPublisher.publishEvent(new RoleEvent(existingRole, RoleEvent.EventType.MODIFIED));</span>
+<span class="fc" id="L123">        return mapper.convertToVO(existingRole);</span>
+    }
+
+    private Role findByPKeyInternal(String pKey) {
+<span class="fc" id="L127">        return repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(</span>
+<span class="fc" id="L128">                translator.translate(ROLE_WITH_PKEY_NOT_EXIST, pKey),</span>
+                ROLE_WITH_PKEY_NOT_EXIST,
+                pKey));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void delete(@NotBlank String pKey) {
+<span class="fc" id="L139">        var role = repository.findBypKey(pKey);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (role.isPresent()) {</span>
+<span class="fc" id="L141">            repository.deleteByPKey(pKey);</span>
+<span class="fc" id="L142">            eventPublisher.publishEvent(new RoleEvent(role.get(), RoleEvent.EventType.DELETED));</span>
+        }
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull RoleVO assignUser(@NotBlank String pKey, @NotBlank String userPKey) {
+<span class="fc" id="L152">        var role = findByPKeyInternal(pKey);</span>
+<span class="fc" id="L153">        var user = userService.findByPKey(userPKey);</span>
+<span class="fc" id="L154">        role.addUser(user);</span>
+<span class="fc" id="L155">        role = repository.save(role);</span>
+<span class="fc" id="L156">        eventPublisher.publishEvent(new RoleEvent(role, RoleEvent.EventType.MODIFIED));</span>
+<span class="fc" id="L157">        return mapper.convertToVO(role);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull RoleVO unassignUser(@NotBlank String pKey, @NotBlank String userPKey) {
+<span class="fc" id="L166">        var role = findByPKeyInternal(pKey);</span>
+<span class="fc" id="L167">        var user = userService.findByPKey(userPKey);</span>
+<span class="fc" id="L168">        role.removeUser(user);</span>
+<span class="fc" id="L169">        role = repository.save(role);</span>
+<span class="fc" id="L170">        eventPublisher.publishEvent(new RoleEvent(role, RoleEvent.EventType.MODIFIED));</span>
+<span class="fc" id="L171">        return mapper.convertToVO(role);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

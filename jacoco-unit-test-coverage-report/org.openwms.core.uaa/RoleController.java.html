@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoleController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa</a> &gt; <span class="el_source">RoleController.java</span></div><h1>RoleController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.uaa;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.ameba.http.MeasuredRestController;
+import org.openwms.core.http.AbstractWebController;
+import org.openwms.core.http.Index;
+import org.openwms.core.uaa.api.RoleVO;
+import org.openwms.core.uaa.api.SecurityObjectVO;
+import org.openwms.core.uaa.api.UserVO;
+import org.openwms.core.uaa.api.ValidationGroups;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.openwms.core.uaa.api.UAAConstants.API_ROLES;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+/**
+ * A RoleController.
+ *
+ * @author Heiko Scherrer
+ */
+@Validated
+@MeasuredRestController
+public class RoleController extends AbstractWebController {
+
+<span class="fc" id="L57">    private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);</span>
+    private final RoleService roleService;
+
+<span class="fc" id="L60">    public RoleController(RoleService roleService) {</span>
+<span class="fc" id="L61">        this.roleService = roleService;</span>
+<span class="fc" id="L62">    }</span>
+
+    @GetMapping(API_ROLES + &quot;/index&quot;)
+    public ResponseEntity&lt;Index&gt; index() {
+
+<span class="nc" id="L67">        return ResponseEntity.ok(</span>
+                new Index(
+<span class="nc" id="L69">                        linkTo(methodOn(RoleController.class).findByPKey(&quot;pKey&quot;)).withRel(&quot;roles-findbypkey&quot;),</span>
+<span class="nc" id="L70">                        linkTo(methodOn(RoleController.class).findAllRoles()).withRel(&quot;roles-findall&quot;),</span>
+<span class="nc" id="L71">                        linkTo(methodOn(RoleController.class).findUsersOfRole(&quot;pKey&quot;)).withRel(&quot;roles-findusersofrole&quot;),</span>
+<span class="nc" id="L72">                        linkTo(methodOn(RoleController.class).findGrantsOfRole(&quot;pKey&quot;)).withRel(&quot;roles-findgrantsofrole&quot;),</span>
+<span class="nc" id="L73">                        linkTo(methodOn(RoleController.class).create(new RoleVO(), null)).withRel(&quot;roles-create&quot;),</span>
+<span class="nc" id="L74">                        linkTo(methodOn(RoleController.class).save(&quot;pKey&quot;, new RoleVO())).withRel(&quot;roles-save&quot;),</span>
+<span class="nc" id="L75">                        linkTo(methodOn(RoleController.class).delete(&quot;pKey&quot;)).withRel(&quot;roles-delete&quot;),</span>
+<span class="nc" id="L76">                        linkTo(methodOn(RoleController.class).assignUserToRole(&quot;pKey&quot;, &quot;userPKey&quot;)).withRel(&quot;roles-assignuser&quot;),</span>
+<span class="nc" id="L77">                        linkTo(methodOn(RoleController.class).unassignUser(&quot;pKey&quot;, &quot;userPKey&quot;)).withRel(&quot;roles-unassignuser&quot;)</span>
+                )
+        );
+    }
+
+    @GetMapping(API_ROLES + &quot;/{pKey}&quot;)
+    public ResponseEntity&lt;RoleVO&gt; findByPKey(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="nc" id="L85">        var result = roleService.findByPKey(pKey);</span>
+<span class="nc" id="L86">        replaceUsers(result);</span>
+<span class="nc" id="L87">        addSelfLink(result);</span>
+<span class="nc" id="L88">        return ResponseEntity</span>
+<span class="nc" id="L89">                .status(HttpStatus.OK)</span>
+<span class="nc" id="L90">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="nc" id="L91">                .body(result);</span>
+    }
+
+    @GetMapping(API_ROLES)
+    public ResponseEntity&lt;List&lt;RoleVO&gt;&gt; findAllRoles() {
+<span class="nc" id="L96">        var result = roleService.findAll();</span>
+<span class="nc" id="L97">        result.forEach(vo -&gt; {</span>
+<span class="nc" id="L98">            replaceUsers(vo);</span>
+<span class="nc" id="L99">            addSelfLink(vo);</span>
+<span class="nc" id="L100">        });</span>
+<span class="nc" id="L101">        return ResponseEntity</span>
+<span class="nc" id="L102">                .status(HttpStatus.OK)</span>
+<span class="nc" id="L103">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="nc" id="L104">                .body(result);</span>
+    }
+
+    @GetMapping(API_ROLES + &quot;/{pKey}/users&quot;)
+    public ResponseEntity&lt;List&lt;UserVO&gt;&gt; findUsersOfRole(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="nc" id="L110">        var result = roleService.findByPKey(pKey);</span>
+<span class="nc" id="L111">        return ResponseEntity</span>
+<span class="nc" id="L112">                .status(HttpStatus.OK)</span>
+<span class="nc" id="L113">                .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)</span>
+<span class="nc" id="L114">                .body(new ArrayList&lt;&gt;(result.getUsers()));</span>
+    }
+
+    @GetMapping(API_ROLES + &quot;/{pKey}/grants&quot;)
+    public ResponseEntity&lt;List&lt;SecurityObjectVO&gt;&gt; findGrantsOfRole(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="nc" id="L120">        var result = roleService.findByPKey(pKey);</span>
+<span class="nc" id="L121">        return ResponseEntity</span>
+<span class="nc" id="L122">                .status(HttpStatus.OK)</span>
+<span class="nc" id="L123">                .header(HttpHeaders.CONTENT_TYPE, SecurityObjectVO.MEDIA_TYPE)</span>
+<span class="nc" id="L124">                .body(new ArrayList&lt;&gt;(result.getGrants()));</span>
+    }
+
+    @PostMapping(API_ROLES)
+    @Validated(ValidationGroups.Create.class)
+    public ResponseEntity&lt;RoleVO&gt; create(@RequestBody @Valid @NotNull RoleVO role, HttpServletRequest req) {
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L132">            LOGGER.debug(&quot;Creating Role [{}]&quot;, role);</span>
+        }
+<span class="nc" id="L134">        var result = roleService.create(role);</span>
+<span class="nc" id="L135">        replaceUsers(result);</span>
+<span class="nc" id="L136">        addSelfLink(result);</span>
+<span class="nc" id="L137">        return ResponseEntity</span>
+<span class="nc" id="L138">                .created(super.getLocationURIForCreatedResource(req, result.getpKey()))</span>
+<span class="nc" id="L139">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="nc" id="L140">                .body(result);</span>
+    }
+
+    @PutMapping(API_ROLES + &quot;/{pKey}&quot;)
+    @Validated(ValidationGroups.Modify.class)
+    public ResponseEntity&lt;RoleVO&gt; save(@PathVariable(&quot;pKey&quot;) String pKey, @RequestBody @Valid @NotNull RoleVO role) {
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L148">            LOGGER.debug(&quot;Updating Role with pKey [{}] to [{}]&quot;, pKey, role);</span>
+        }
+<span class="nc" id="L150">        var result = roleService.save(pKey, role);</span>
+<span class="nc" id="L151">        replaceUsers(result);</span>
+<span class="nc" id="L152">        addSelfLink(result);</span>
+<span class="nc" id="L153">        return ResponseEntity</span>
+<span class="nc" id="L154">                .ok()</span>
+<span class="nc" id="L155">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="nc" id="L156">                .body(result);</span>
+    }
+
+    @DeleteMapping(API_ROLES + &quot;/{pKey}&quot;)
+    public ResponseEntity&lt;Void&gt; delete(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L163">            LOGGER.debug(&quot;Deleting Role with pKey [{}]&quot;, pKey);</span>
+        }
+<span class="nc" id="L165">        roleService.delete(pKey);</span>
+<span class="nc" id="L166">        return ResponseEntity.noContent().build();</span>
+    }
+
+    @PostMapping(API_ROLES + &quot;/{pKey}/users/{userPKey}&quot;)
+    public ResponseEntity&lt;RoleVO&gt; assignUserToRole(@PathVariable(&quot;pKey&quot;) String pKey, @PathVariable(&quot;userPKey&quot;) String userPKey) {
+
+<span class="nc" id="L172">        var result = roleService.assignUser(pKey, userPKey);</span>
+<span class="nc" id="L173">        replaceUsers(result);</span>
+<span class="nc" id="L174">        addSelfLink(result);</span>
+<span class="nc" id="L175">        return ResponseEntity</span>
+<span class="nc" id="L176">                .ok()</span>
+<span class="nc" id="L177">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="nc" id="L178">                .body(result);</span>
+    }
+
+    @DeleteMapping(API_ROLES + &quot;/{pKey}/users/{userPKey}&quot;)
+    public ResponseEntity&lt;RoleVO&gt; unassignUser(@PathVariable(&quot;pKey&quot;) String pKey, @PathVariable(&quot;userPKey&quot;) String userPKey) {
+
+<span class="nc" id="L184">        var result = roleService.unassignUser(pKey, userPKey);</span>
+<span class="nc" id="L185">        replaceUsers(result);</span>
+<span class="nc" id="L186">        addSelfLink(result);</span>
+<span class="nc" id="L187">        return ResponseEntity</span>
+<span class="nc" id="L188">                .ok()</span>
+<span class="nc" id="L189">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="nc" id="L190">                .body(result);</span>
+    }
+
+    private void replaceUsers(RoleVO role) {
+<span class="nc" id="L194">        role.add(linkTo(methodOn(RoleController.class).findUsersOfRole(role.getpKey())).withRel(&quot;users&quot;));</span>
+<span class="nc" id="L195">        role.getUsers().clear();</span>
+<span class="nc" id="L196">        role.add(linkTo(methodOn(RoleController.class).findGrantsOfRole(role.getpKey())).withRel(&quot;grants&quot;));</span>
+<span class="nc" id="L197">        role.getGrants().clear();</span>
+<span class="nc" id="L198">    }</span>
+
+    private void addSelfLink(RoleVO result) {
+<span class="nc" id="L201">        result.add(linkTo(methodOn(RoleController.class).findByPKey(result.getpKey())).withRel(&quot;role-findbypkey&quot;));</span>
+<span class="nc" id="L202">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

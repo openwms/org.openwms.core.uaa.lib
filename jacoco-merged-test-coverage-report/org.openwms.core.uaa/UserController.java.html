@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.uaa;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.ameba.exception.NotFoundException;
+import org.ameba.http.MeasuredRestController;
+import org.ameba.i18n.Translator;
+import org.openwms.core.http.AbstractWebController;
+import org.openwms.core.http.Index;
+import org.openwms.core.uaa.api.AuthenticatedUserVO;
+import org.openwms.core.uaa.api.PasswordString;
+import org.openwms.core.uaa.api.RoleVO;
+import org.openwms.core.uaa.api.SecurityObjectVO;
+import org.openwms.core.uaa.api.UserVO;
+import org.openwms.core.uaa.api.ValidationGroups;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.openwms.core.uaa.MessageCodes.USER_WITH_NAME_NOT_EXIST;
+import static org.openwms.core.uaa.api.UAAConstants.API_USERS;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+/**
+ * An UserController represents a RESTful access to {@code User}s. It is transactional by the means it is the outer application service
+ * facade that returns validated and completed {@code User} objects to its clients.
+ *
+ * @author Heiko Scherrer
+ */
+@Validated
+@Transactional
+@MeasuredRestController
+public class UserController extends AbstractWebController {
+
+    private final Translator translator;
+    private final UserService userService;
+    private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
+    private final SecurityObjectMapper securityObjectMapper;
+
+    public UserController(Translator translator, UserService userService, UserMapper userMapper, RoleMapper roleMapper,
+<span class="fc" id="L74">            SecurityObjectMapper securityObjectMapper) {</span>
+<span class="fc" id="L75">        this.translator = translator;</span>
+<span class="fc" id="L76">        this.userService = userService;</span>
+<span class="fc" id="L77">        this.userMapper = userMapper;</span>
+<span class="fc" id="L78">        this.roleMapper = roleMapper;</span>
+<span class="fc" id="L79">        this.securityObjectMapper = securityObjectMapper;</span>
+<span class="fc" id="L80">    }</span>
+
+    @GetMapping(API_USERS + &quot;/index&quot;)
+    @Transactional(propagation = Propagation.NEVER)
+    public ResponseEntity&lt;Index&gt; index() {
+
+<span class="fc" id="L86">        return ResponseEntity.ok(</span>
+                new Index(
+<span class="fc" id="L88">                        linkTo(methodOn(UserController.class).findByPKey(&quot;{pKey}&quot;)).withRel(&quot;users-findbypkey&quot;),</span>
+<span class="fc" id="L89">                        linkTo(methodOn(UserController.class).findAllUsers()).withRel(&quot;users-findall&quot;),</span>
+<span class="fc" id="L90">                        linkTo(methodOn(UserController.class).findGrantsForUser(&quot;{pKey}&quot;)).withRel(&quot;users-findgrants&quot;),</span>
+<span class="fc" id="L91">                        linkTo(methodOn(UserController.class).create(new UserVO(), null)).withRel(&quot;users-create&quot;),</span>
+<span class="fc" id="L92">                        linkTo(methodOn(UserController.class).save(new UserVO())).withRel(&quot;users-save&quot;),</span>
+<span class="fc" id="L93">                        linkTo(methodOn(UserController.class).saveImage(&quot;&quot;, &quot;{pKey}&quot;)).withRel(&quot;users-saveimage&quot;),</span>
+<span class="fc" id="L94">                        linkTo(methodOn(UserController.class).updatePassword(&quot;{pKey}&quot;, new PasswordString(&quot;newPassword&quot;))).withRel(&quot;users-change-password&quot;),</span>
+<span class="fc" id="L95">                        linkTo(methodOn(UserController.class).delete(&quot;{pKey}&quot;)).withRel(&quot;users-delete&quot;)</span>
+                )
+        );
+    }
+
+    @GetMapping(API_USERS + &quot;/{pKey}&quot;)
+    public ResponseEntity&lt;UserVO&gt; findByPKey(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="fc" id="L103">        var eo = userService.findByPKey(pKey);</span>
+<span class="fc" id="L104">        var result = userMapper.convertToVO(eo);</span>
+<span class="fc" id="L105">        addSelfLink(result);</span>
+<span class="fc" id="L106">        return ResponseEntity</span>
+<span class="fc" id="L107">                .status(HttpStatus.OK)</span>
+<span class="fc" id="L108">                .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)</span>
+<span class="fc" id="L109">                .body(result);</span>
+    }
+
+    @GetMapping(value = API_USERS, params = &quot;username&quot;)
+    public ResponseEntity&lt;AuthenticatedUserVO&gt; findByUsername(@RequestParam(&quot;username&quot;) String username) {
+
+<span class="nc" id="L115">        var eoOpt = userService.findByUsername(username);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
+<span class="nc" id="L117">            throw new NotFoundException(</span>
+<span class="nc" id="L118">                    translator.translate(USER_WITH_NAME_NOT_EXIST, username),</span>
+                    USER_WITH_NAME_NOT_EXIST,
+                    username);
+        }
+<span class="nc" id="L122">        var result = userMapper.convertToAuthenticatedUserVO(eoOpt.get());</span>
+<span class="nc" id="L123">        addSelfLink(result);</span>
+<span class="nc" id="L124">        return ResponseEntity</span>
+<span class="nc" id="L125">                .status(HttpStatus.OK)</span>
+<span class="nc" id="L126">                .header(HttpHeaders.CONTENT_TYPE, AuthenticatedUserVO.MEDIA_TYPE)</span>
+<span class="nc" id="L127">                .body(result);</span>
+    }
+
+    @GetMapping(API_USERS)
+    public ResponseEntity&lt;List&lt;UserVO&gt;&gt; findAllUsers() {
+
+<span class="fc" id="L133">        var eos = userService.findAll();</span>
+<span class="fc" id="L134">        var result = userMapper.convertToVO(new ArrayList&lt;&gt;(eos));</span>
+<span class="fc" id="L135">        result.forEach(this::addSelfLink);</span>
+<span class="fc" id="L136">        return ResponseEntity</span>
+<span class="fc" id="L137">                .status(HttpStatus.OK)</span>
+<span class="fc" id="L138">                .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)</span>
+<span class="fc" id="L139">                .body(result);</span>
+    }
+
+    @GetMapping(API_USERS + &quot;/{pKey}/grants&quot;)
+    public ResponseEntity&lt;List&lt;SecurityObjectVO&gt;&gt; findGrantsForUser(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="fc" id="L145">        var user = userService.findByPKey(pKey);</span>
+<span class="fc" id="L146">        var result = securityObjectMapper.convertToVOs(user.getGrants());</span>
+<span class="fc" id="L147">        return ResponseEntity</span>
+<span class="fc" id="L148">                .status(HttpStatus.OK)</span>
+<span class="fc" id="L149">                .header(HttpHeaders.CONTENT_TYPE, SecurityObjectVO.MEDIA_TYPE)</span>
+<span class="fc" id="L150">                .body(result);</span>
+    }
+
+    @GetMapping(API_USERS + &quot;/{pKey}/roles&quot;)
+    public ResponseEntity&lt;List&lt;RoleVO&gt;&gt; findRolesForUser(@PathVariable(&quot;pKey&quot;) @NotEmpty String pKey) {
+
+<span class="fc" id="L156">        var eo = userService.findByPKey(pKey);</span>
+<span class="fc" id="L157">        var result = roleMapper.convertToVO(eo.getRoles());</span>
+<span class="fc" id="L158">        return ResponseEntity</span>
+<span class="fc" id="L159">                .status(HttpStatus.OK)</span>
+<span class="fc" id="L160">                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)</span>
+<span class="fc" id="L161">                .body(result);</span>
+    }
+
+    @PostMapping(API_USERS)
+    @Validated(ValidationGroups.Create.class)
+    public ResponseEntity&lt;UserVO&gt; create(@RequestBody @Valid @NotNull UserVO vo, HttpServletRequest req) {
+
+<span class="fc" id="L168">        var eo = userMapper.convertFrom(vo);</span>
+<span class="fc" id="L169">        var created = userService.create(eo, vo.getRoleNames());</span>
+<span class="fc" id="L170">        var result = userMapper.convertToVO(created);</span>
+<span class="fc" id="L171">        return ResponseEntity</span>
+<span class="fc" id="L172">                .created(getLocationURIForCreatedResource(req, result.getpKey()))</span>
+<span class="fc" id="L173">                .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)</span>
+<span class="fc" id="L174">                .body(result);</span>
+    }
+
+    @PutMapping(API_USERS)
+    @Validated(ValidationGroups.Modify.class)
+    public ResponseEntity&lt;UserVO&gt; save(@RequestBody @Valid @NotNull UserVO vo) {
+
+<span class="fc" id="L181">        var user = userMapper.convertFrom(vo);</span>
+<span class="fc" id="L182">        var saved = userService.save(user, vo.getRoleNames());</span>
+<span class="fc" id="L183">        var result = userMapper.convertToVO(saved);</span>
+<span class="fc" id="L184">        return ResponseEntity</span>
+<span class="fc" id="L185">                .status(HttpStatus.OK)</span>
+<span class="fc" id="L186">                .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)</span>
+<span class="fc" id="L187">                .body(result);</span>
+    }
+
+    @PostMapping(API_USERS + &quot;/{pKey}/details/image&quot;)
+    public ResponseEntity&lt;Void&gt; saveImage(@RequestBody @NotNull String image, @PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="fc" id="L193">        userService.uploadImageFile(pKey, image.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L194">        return ResponseEntity.ok().build();</span>
+    }
+
+    @PostMapping(API_USERS + &quot;/{pKey}/password&quot;)
+    public ResponseEntity&lt;UserVO&gt; updatePassword(@PathVariable(&quot;pKey&quot;) String pKey, @RequestBody @NotNull PasswordString password) {
+
+        try {
+<span class="fc" id="L201">            var result = userService.updatePassword(pKey, password.asValue());</span>
+<span class="fc" id="L202">            return ResponseEntity</span>
+<span class="fc" id="L203">                    .status(HttpStatus.OK)</span>
+<span class="fc" id="L204">                    .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)</span>
+<span class="fc" id="L205">                    .body(result);</span>
+<span class="nc" id="L206">        } catch (InvalidPasswordException e) {</span>
+<span class="nc" id="L207">            return ResponseEntity.status(HttpStatus.CONFLICT).build();</span>
+        }
+    }
+
+    @DeleteMapping(API_USERS + &quot;/{pKey}&quot;)
+    public ResponseEntity&lt;Void&gt; delete(@PathVariable(&quot;pKey&quot;) String pKey) {
+
+<span class="fc" id="L214">        userService.delete(pKey);</span>
+<span class="fc" id="L215">        return ResponseEntity.noContent().build();</span>
+    }
+
+    private void addSelfLink(UserVO result) {
+<span class="fc" id="L219">        result.add(linkTo(methodOn(UserController.class).findByPKey(result.getpKey())).withRel(&quot;user-findbypkey&quot;));</span>
+<span class="fc" id="L220">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

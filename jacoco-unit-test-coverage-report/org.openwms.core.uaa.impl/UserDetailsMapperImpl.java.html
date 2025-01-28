@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDetailsMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.impl</a> &gt; <span class="el_source">UserDetailsMapperImpl.java</span></div><h1>UserDetailsMapperImpl.java</h1><pre class="source lang-java linenums">package org.openwms.core.uaa.impl;
+
+import javax.annotation.processing.Generated;
+import org.openwms.core.uaa.UserDetailsMapper;
+import org.openwms.core.uaa.api.UserDetailsVO;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;
+)
+@Component
+<span class="fc" id="L12">public class UserDetailsMapperImpl implements UserDetailsMapper {</span>
+
+    @Override
+    public UserDetailsVO map(UserDetails eo) {
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L17">            return null;</span>
+        }
+
+<span class="nc" id="L20">        UserDetailsVO userDetailsVO = new UserDetailsVO();</span>
+
+<span class="nc" id="L22">        return userDetailsVO;</span>
+    }
+
+    @Override
+    public UserDetails mapToEO(UserDetailsVO vo) {
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if ( vo == null ) {</span>
+<span class="nc" id="L28">            return null;</span>
+        }
+
+<span class="nc" id="L31">        UserDetails userDetails = new UserDetails();</span>
+
+<span class="nc" id="L33">        userDetails.setPhoneNo( vo.getPhoneNo() );</span>
+<span class="nc" id="L34">        userDetails.setDescription( vo.getDescription() );</span>
+<span class="nc" id="L35">        userDetails.setComment( vo.getComment() );</span>
+<span class="nc" id="L36">        userDetails.setOffice( vo.getOffice() );</span>
+<span class="nc" id="L37">        userDetails.setIm( vo.getIm() );</span>
+<span class="nc" id="L38">        userDetails.setDepartment( vo.getDepartment() );</span>
+<span class="nc" id="L39">        userDetails.setImage( map( vo.getImage() ) );</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if ( vo.getGender() != null ) {</span>
+<span class="nc" id="L41">            userDetails.setGender( Enum.valueOf( UserDetails.Gender.class, vo.getGender() ) );</span>
+        }
+
+<span class="nc" id="L44">        return userDetails;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

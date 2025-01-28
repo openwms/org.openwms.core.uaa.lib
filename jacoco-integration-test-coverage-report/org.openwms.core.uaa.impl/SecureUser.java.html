@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecureUser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.impl</a> &gt; <span class="el_source">SecureUser.java</span></div><h1>SecureUser.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.uaa.impl;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * A SecureUser.
+ *
+ * @author Heiko Scherrer
+ */
+@JacksonAware
+public final class SecureUser implements UserDetails, Serializable {
+
+    private String username;
+    private char[] password;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+    private List&lt;? extends GrantedAuthority&gt; authorities;
+
+    @JsonCreator
+<span class="nc" id="L46">    SecureUser() {}</span>
+
+    public SecureUser(final String username, final String password, final boolean accountNonExpired, final boolean accountNonLocked,
+<span class="nc" id="L49">            final boolean credentialsNonExpired, final boolean enabled, final Collection&lt;SecurityObjectAuthority&gt; securityObjectAuthorities) {</span>
+<span class="nc" id="L50">        Assert.hasText(username, &quot;username must not be null&quot;);</span>
+<span class="nc" id="L51">        Assert.hasText(password, &quot;password must not be null&quot;);</span>
+<span class="nc" id="L52">        this.username = username;</span>
+<span class="nc" id="L53">        this.password = password.toCharArray();</span>
+<span class="nc" id="L54">        this.accountNonExpired = accountNonExpired;</span>
+<span class="nc" id="L55">        this.accountNonLocked = accountNonLocked;</span>
+<span class="nc" id="L56">        this.credentialsNonExpired = credentialsNonExpired;</span>
+<span class="nc" id="L57">        this.enabled = enabled;</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (securityObjectAuthorities != null) {</span>
+<span class="nc" id="L59">            authorities = securityObjectAuthorities.stream()</span>
+<span class="nc" id="L60">                    .map(soa -&gt; new SimpleGrantedAuthority(soa.getAuthority()))</span>
+<span class="nc" id="L61">                    .toList();</span>
+        } else {
+<span class="nc" id="L63">            authorities = new ArrayList&lt;&gt;();</span>
+        }
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<span class="nc" id="L69">        return authorities;</span>
+    }
+
+    @Override
+    public String getPassword() {
+<span class="nc" id="L74">        return String.valueOf(password);</span>
+    }
+
+    @Override
+    public String getUsername() {
+<span class="nc" id="L79">        return username;</span>
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+<span class="nc" id="L84">        return accountNonExpired;</span>
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+<span class="nc" id="L89">        return accountNonLocked;</span>
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+<span class="nc" id="L94">        return credentialsNonExpired;</span>
+    }
+
+    @Override
+    public boolean isEnabled() {
+<span class="nc" id="L99">        return enabled;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

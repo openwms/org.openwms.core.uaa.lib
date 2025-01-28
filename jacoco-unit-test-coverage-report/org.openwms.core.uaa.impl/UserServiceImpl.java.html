@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.impl</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.uaa.impl;
+
+import jakarta.validation.Valid;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.ameba.annotation.Measured;
+import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
+import org.ameba.exception.ResourceExistsException;
+import org.ameba.i18n.Translator;
+import org.openwms.core.uaa.InvalidPasswordException;
+import org.openwms.core.uaa.RoleService;
+import org.openwms.core.uaa.UserMapper;
+import org.openwms.core.uaa.UserService;
+import org.openwms.core.uaa.api.UserVO;
+import org.openwms.core.uaa.api.ValidationGroups;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.plugin.core.PluginRegistry;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import static org.ameba.system.ValidationUtil.validate;
+import static org.openwms.core.uaa.MessageCodes.USER_ALREADY_EXISTS;
+import static org.openwms.core.uaa.MessageCodes.USER_SAVE_NOT_BE_NULL;
+import static org.openwms.core.uaa.MessageCodes.USER_WITH_PKEY_NOT_EXIST;
+import static org.openwms.core.uaa.MessageCodes.USER_WITH_PK_NOT_EXIST;
+
+/**
+ * An UserServiceImpl is a Spring managed transactional implementation of the {@link UserService}. Using Spring 2 annotation support
+ * autowires collaborators, therefore XML configuration becomes obsolete. This class is marked with Amebas {@link TxService} annotation to
+ * benefit from Springs exception translation interceptor. Traditional CRUD operations are delegated to an {@link UserRepository}.
+ * &lt;p&gt;
+ * This implementation exists since Spring 2.0.
+ *
+ * @author Heiko Scherrer
+ */
+@TxService
+class UserServiceImpl implements UserService {
+
+<span class="fc" id="L67">    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);</span>
+    private final UserRepository repository;
+    private final GrantRepository securityObjectDao;
+    private final RoleService roleService;
+    private final PasswordEncoder enc;
+    private final Translator translator;
+    private final Validator validator;
+    private final UserMapper userMapper;
+    private final PluginRegistry&lt;UserUpdater, String&gt; userUpdater;
+    private final ApplicationEventPublisher eventPublisher;
+    private final String systemUsername;
+    private final String systemPassword;
+
+    UserServiceImpl(UserRepository repository, GrantRepository securityObjectDao, @Lazy RoleService roleService,
+            PasswordEncoder enc, Translator translator, Validator validator, UserMapper userMapper,
+            PluginRegistry&lt;UserUpdater, String&gt; userUpdater, ApplicationEventPublisher eventPublisher, @Value(&quot;${owms.security.system.username}&quot;) String systemUsername,
+<span class="fc" id="L83">            @Value(&quot;${owms.security.system.password}&quot;) String systemPassword) {</span>
+<span class="fc" id="L84">        this.repository = repository;</span>
+<span class="fc" id="L85">        this.securityObjectDao = securityObjectDao;</span>
+<span class="fc" id="L86">        this.roleService = roleService;</span>
+<span class="fc" id="L87">        this.enc = enc;</span>
+<span class="fc" id="L88">        this.translator = translator;</span>
+<span class="fc" id="L89">        this.validator = validator;</span>
+<span class="fc" id="L90">        this.userMapper = userMapper;</span>
+<span class="fc" id="L91">        this.userUpdater = userUpdater;</span>
+<span class="fc" id="L92">        this.eventPublisher = eventPublisher;</span>
+<span class="fc" id="L93">        this.systemUsername = systemUsername;</span>
+<span class="fc" id="L94">        this.systemPassword = systemPassword;</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Validated(ValidationGroups.Modify.class)
+    @Measured
+    public @NotNull User save(@NotNull(groups = ValidationGroups.Modify.class) @Valid User user, List&lt;String&gt; roleNames) {
+<span class="nc" id="L104">        var existingUser = findByPKeyInternal(user.getPersistentKey());</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        for (var updater : userUpdater.getPlugins()) {</span>
+<span class="nc" id="L106">            existingUser = updater.update(existingUser, user);</span>
+<span class="nc" id="L107">        }</span>
+<span class="nc bnc" id="L108" title="All 4 branches missed.">        if (roleNames != null &amp;&amp; !roleNames.isEmpty()) {</span>
+<span class="nc" id="L109">            existingUser.setRoles(roleService.findByNames(roleNames));</span>
+        }
+<span class="nc" id="L111">        var saved = repository.save(existingUser);</span>
+<span class="nc" id="L112">        eventPublisher.publishEvent(new UserEvent(saved, UserEvent.EventType.MODIFIED));</span>
+<span class="nc" id="L113">        return saved;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void uploadImageFile(@NotBlank String pKey, @NotNull byte[] image) {
+<span class="nc" id="L122">        var user = findByPKeyInternal(pKey);</span>
+<span class="nc" id="L123">        user.getUserDetails().setImage(image);</span>
+<span class="nc" id="L124">        saveInternal(user);</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull User save(@NotNull User entity) {
+<span class="nc" id="L133">        return saveInternal(entity);</span>
+    }
+
+    private User saveInternal(User entity) {
+<span class="nc" id="L137">        Assert.notNull(entity, translator.translate(USER_SAVE_NOT_BE_NULL));</span>
+<span class="nc" id="L138">        validate(validator, entity, ValidationGroups.Modify.class);</span>
+<span class="nc" id="L139">        var saved = repository.save(entity);</span>
+<span class="nc" id="L140">        eventPublisher.publishEvent(new UserEvent(saved, UserEvent.EventType.MODIFIED));</span>
+<span class="nc" id="L141">        return saved;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Marked as read-only transactional method.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    @Measured
+    public @NotNull SystemUser createSystemUser() {
+<span class="nc" id="L153">        var sys = new SystemUser(systemUsername, systemPassword);</span>
+<span class="nc" id="L154">        var role = new Role.Builder(SystemUser.SYSTEM_ROLE_NAME).withDescription(&quot;Superusers Role&quot;).asImmutable().build();</span>
+<span class="nc" id="L155">        role.setGrants(new HashSet&lt;&gt;(securityObjectDao.findAll()));</span>
+<span class="nc" id="L156">        sys.addRole(role);</span>
+<span class="nc" id="L157">        return sys;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    @Validated(ValidationGroups.Create.class)
+    public @NotNull User create(@NotNull(groups = ValidationGroups.Create.class) @Valid User user, List&lt;String&gt; roleNames) {
+<span class="nc" id="L167">        var optUser = repository.findByUsername(user.getUsername());</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (optUser.isPresent()) {</span>
+<span class="nc" id="L169">            throw new ResourceExistsException(translator.translate(USER_ALREADY_EXISTS, user.getUsername()),</span>
+                    USER_ALREADY_EXISTS,
+<span class="nc" id="L171">                    user.getUsername());</span>
+        }
+<span class="nc" id="L173">        user.getEmailAddresses().forEach(e -&gt; e.setUser(user));</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (roleNames != null) {</span>
+<span class="nc" id="L175">            var byNames = roleService.findByNames(roleNames);</span>
+<span class="nc" id="L176">            byNames.forEach(role -&gt; role.addUser(user));</span>
+<span class="nc" id="L177">            user.setRoles(byNames);</span>
+<span class="nc" id="L178">            LOGGER.debug(&quot;Assigned roles [{}] to User [{}]&quot;, byNames, user.getUsername());</span>
+        }
+<span class="nc" id="L180">        var created = repository.save(user);</span>
+<span class="nc" id="L181">        eventPublisher.publishEvent(new UserEvent(created, UserEvent.EventType.CREATED));</span>
+<span class="nc" id="L182">        return created;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull Optional&lt;User&gt; findByUsername(@NotBlank String username) {
+<span class="nc" id="L191">        return repository.findByUsername(username);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull User findByPKey(@NotBlank String pKey) {
+<span class="nc" id="L200">        return findByPKeyInternal(pKey);</span>
+    }
+
+    private User findByPKeyInternal(String pKey) {
+<span class="nc" id="L204">        return repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(</span>
+<span class="nc" id="L205">                translator.translate(USER_WITH_PKEY_NOT_EXIST, pKey),</span>
+                USER_WITH_PKEY_NOT_EXIST,
+                pKey
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void delete(@NotBlank String pKey) {
+<span class="nc" id="L217">        var existing = repository.findBypKey(pKey);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (existing.isPresent()) {</span>
+<span class="nc" id="L219">            repository.delete(existing.get());</span>
+<span class="nc" id="L220">            eventPublisher.publishEvent(new UserEvent(existing.get(), UserEvent.EventType.DELETED));</span>
+        }
+<span class="nc" id="L222">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull UserVO updatePassword(@NotBlank String pKey, @NotNull CharSequence newPassword) throws InvalidPasswordException {
+<span class="nc" id="L230">        var saved = findByPKey(pKey);</span>
+<span class="nc" id="L231">        saved.changePassword(enc.encode(newPassword), newPassword.toString(), enc);</span>
+<span class="nc" id="L232">        saveInternal(saved);</span>
+<span class="nc" id="L233">        return userMapper.convertToVO(saved);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull Collection&lt;User&gt; findAll() {
+<span class="nc" id="L242">        return repository.findAll();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull User findById(@NotNull Long pk) {
+<span class="nc" id="L251">        return repository.findById(pk).orElseThrow(() -&gt; new NotFoundException(</span>
+                translator, USER_WITH_PK_NOT_EXIST, new Long[]{pk}, pk
+        ));
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

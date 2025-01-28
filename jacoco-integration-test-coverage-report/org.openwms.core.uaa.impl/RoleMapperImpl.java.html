@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoleMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.impl</a> &gt; <span class="el_source">RoleMapperImpl.java</span></div><h1>RoleMapperImpl.java</h1><pre class="source lang-java linenums">package org.openwms.core.uaa.impl;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.processing.Generated;
+import org.openwms.core.uaa.RoleMapper;
+import org.openwms.core.uaa.SecurityObjectMapper;
+import org.openwms.core.uaa.UserMapper;
+import org.openwms.core.uaa.api.RoleVO;
+import org.openwms.core.uaa.api.SecurityObjectVO;
+import org.openwms.core.uaa.api.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;
+)
+@Component
+public class RoleMapperImpl implements RoleMapper {
+
+    private final UserMapper userMapper;
+    private final SecurityObjectMapper securityObjectMapper;
+
+    @Autowired
+<span class="fc" id="L27">    public RoleMapperImpl(UserMapper userMapper, SecurityObjectMapper securityObjectMapper) {</span>
+
+<span class="fc" id="L29">        this.userMapper = userMapper;</span>
+<span class="fc" id="L30">        this.securityObjectMapper = securityObjectMapper;</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public RoleVO convertToVO(Role eo) {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L36">            return null;</span>
+        }
+
+<span class="fc" id="L39">        RoleVO.Builder roleVO = RoleVO.newBuilder();</span>
+
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if ( eo.hasPersistentKey() ) {</span>
+<span class="fc" id="L42">            roleVO.pKey( eo.getPersistentKey() );</span>
+        }
+<span class="fc" id="L44">        roleVO.ol( eo.getOl() );</span>
+<span class="fc" id="L45">        roleVO.users( userSetToUserVOSet( eo.getUsers() ) );</span>
+<span class="fc" id="L46">        roleVO.immutable( eo.getImmutable() );</span>
+<span class="fc" id="L47">        roleVO.grants( securityObjectSetToSecurityObjectVOSet( eo.getGrants() ) );</span>
+<span class="fc" id="L48">        roleVO.name( eo.getName() );</span>
+<span class="fc" id="L49">        roleVO.description( eo.getDescription() );</span>
+
+<span class="fc" id="L51">        return roleVO.build();</span>
+    }
+
+    @Override
+    public List&lt;RoleVO&gt; convertToVO(List&lt;Role&gt; eo) {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L57">            return null;</span>
+        }
+
+<span class="fc" id="L60">        List&lt;RoleVO&gt; list = new ArrayList&lt;RoleVO&gt;( eo.size() );</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for ( Role role : eo ) {</span>
+<span class="fc" id="L62">            list.add( convertToVO( role ) );</span>
+<span class="fc" id="L63">        }</span>
+
+<span class="fc" id="L65">        return list;</span>
+    }
+
+    @Override
+    public Role convertFrom(RoleVO vo) {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if ( vo == null ) {</span>
+<span class="nc" id="L71">            return null;</span>
+        }
+
+<span class="fc" id="L74">        String name = null;</span>
+
+<span class="fc" id="L76">        name = vo.getName();</span>
+
+<span class="fc" id="L78">        Role role = new Role( name );</span>
+
+<span class="fc" id="L80">        role.setPersistentKey( vo.getpKey() );</span>
+<span class="fc" id="L81">        Set&lt;User&gt; set = userVOSetToUserSet( vo.getUsers() );</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if ( set != null ) {</span>
+<span class="fc" id="L83">            role.setUsers( set );</span>
+        }
+<span class="fc" id="L85">        Set&lt;SecurityObject&gt; set1 = securityObjectVOSetToSecurityObjectSet( vo.getGrants() );</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if ( set1 != null ) {</span>
+<span class="fc" id="L87">            role.setGrants( set1 );</span>
+        }
+<span class="fc" id="L89">        role.setDescription( vo.getDescription() );</span>
+<span class="fc" id="L90">        role.setImmutable( vo.getImmutable() );</span>
+
+<span class="fc" id="L92">        return role;</span>
+    }
+
+    @Override
+    public SecurityObject convertToRole(SecurityObjectVO vo) {
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if ( vo == null ) {</span>
+<span class="nc" id="L98">            return null;</span>
+        }
+
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (vo instanceof RoleVO) {</span>
+<span class="fc" id="L102">            return convertFrom( (RoleVO) vo );</span>
+        }
+        else {
+<span class="nc" id="L105">            String name = null;</span>
+
+<span class="nc" id="L107">            name = vo.getName();</span>
+
+<span class="nc" id="L109">            SecurityObject securityObject = new SecurityObject( name );</span>
+
+<span class="nc" id="L111">            securityObject.setPersistentKey( vo.getpKey() );</span>
+<span class="nc" id="L112">            securityObject.setDescription( vo.getDescription() );</span>
+
+<span class="nc" id="L114">            return securityObject;</span>
+        }
+    }
+
+    protected Set&lt;UserVO&gt; userSetToUserVOSet(Set&lt;User&gt; set) {
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if ( set == null ) {</span>
+<span class="nc" id="L120">            return null;</span>
+        }
+
+<span class="fc" id="L123">        Set&lt;UserVO&gt; set1 = LinkedHashSet.newLinkedHashSet( set.size() );</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        for ( User user : set ) {</span>
+<span class="fc" id="L125">            set1.add( userMapper.convertToVO( user ) );</span>
+<span class="fc" id="L126">        }</span>
+
+<span class="fc" id="L128">        return set1;</span>
+    }
+
+    protected Set&lt;SecurityObjectVO&gt; securityObjectSetToSecurityObjectVOSet(Set&lt;SecurityObject&gt; set) {
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if ( set == null ) {</span>
+<span class="nc" id="L133">            return null;</span>
+        }
+
+<span class="fc" id="L136">        Set&lt;SecurityObjectVO&gt; set1 = LinkedHashSet.newLinkedHashSet( set.size() );</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        for ( SecurityObject securityObject : set ) {</span>
+<span class="fc" id="L138">            set1.add( securityObjectMapper.convertToVO( securityObject ) );</span>
+<span class="fc" id="L139">        }</span>
+
+<span class="fc" id="L141">        return set1;</span>
+    }
+
+    protected Set&lt;User&gt; userVOSetToUserSet(Set&lt;UserVO&gt; set) {
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if ( set == null ) {</span>
+<span class="fc" id="L146">            return null;</span>
+        }
+
+<span class="fc" id="L149">        Set&lt;User&gt; set1 = LinkedHashSet.newLinkedHashSet( set.size() );</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        for ( UserVO userVO : set ) {</span>
+<span class="fc" id="L151">            set1.add( userMapper.convertFrom( userVO ) );</span>
+<span class="fc" id="L152">        }</span>
+
+<span class="fc" id="L154">        return set1;</span>
+    }
+
+    protected Set&lt;SecurityObject&gt; securityObjectVOSetToSecurityObjectSet(Set&lt;SecurityObjectVO&gt; set) {
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if ( set == null ) {</span>
+<span class="fc" id="L159">            return null;</span>
+        }
+
+<span class="fc" id="L162">        Set&lt;SecurityObject&gt; set1 = LinkedHashSet.newLinkedHashSet( set.size() );</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        for ( SecurityObjectVO securityObjectVO : set ) {</span>
+<span class="fc" id="L164">            set1.add( convertToRole( securityObjectVO ) );</span>
+<span class="fc" id="L165">        }</span>
+
+<span class="fc" id="L167">        return set1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityObjectVO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.api</a> &gt; <span class="el_source">SecurityObjectVO.java</span></div><h1>SecurityObjectVO.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.uaa.api;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotBlank;
+import org.ameba.http.AbstractBase;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A SecurityObjectVO encapsulates common attributes of roles and grants.
+ *
+ * @author Heiko Scherrer
+ */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+public class SecurityObjectVO&lt;T extends SecurityObjectVO&lt;T&gt;&gt; extends AbstractBase&lt;T&gt; implements Serializable {
+
+    /** HTTP media type representation. */
+    public static final String MEDIA_TYPE = &quot;application/vnd.openwms.uaa.security-object-v1+json&quot;;
+
+    /** The persistent key. */
+    @JsonProperty(&quot;pKey&quot;)
+    private String pKey;
+    /** Unique name of the SecurityObject. */
+    @JsonProperty(&quot;name&quot;)
+    @NotBlank(groups = {ValidationGroups.Create.class, ValidationGroups.Modify.class})
+    private String name;
+    /** A descriptive text for the SecurityObject. */
+    @JsonProperty(&quot;description&quot;)
+    private String description;
+
+    /*~-------------------- constructors --------------------*/
+    @JsonCreator
+<span class="fc" id="L55">    public SecurityObjectVO() {</span>
+        // NOT for the mapper
+<span class="fc" id="L57">    }</span>
+
+    /*~-------------------- accessors --------------------*/
+    public String getpKey() {
+<span class="nc" id="L61">        return pKey;</span>
+    }
+
+    public void setpKey(String pKey) {
+<span class="fc" id="L65">        this.pKey = pKey;</span>
+<span class="fc" id="L66">    }</span>
+
+    public String getName() {
+<span class="nc" id="L69">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L73">        this.name = name;</span>
+<span class="fc" id="L74">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L77">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L81">        this.description = description;</span>
+<span class="fc" id="L82">    }</span>
+
+    /*~-------------------- methods --------------------*/
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L94">        var that = (SecurityObjectVO) o;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        return Objects.equals(name, that.name) &amp;&amp;</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">                Objects.equals(description, that.description);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L106">        return Objects.hash(name, description);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Name only.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L116">        return name;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

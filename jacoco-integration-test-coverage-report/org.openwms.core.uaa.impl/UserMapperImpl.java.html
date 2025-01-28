@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: UAA Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.uaa.impl</a> &gt; <span class="el_source">UserMapperImpl.java</span></div><h1>UserMapperImpl.java</h1><pre class="source lang-java linenums">package org.openwms.core.uaa.impl;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.processing.Generated;
+import org.openwms.core.uaa.EmailMapper;
+import org.openwms.core.uaa.UserDetailsMapper;
+import org.openwms.core.uaa.UserMapper;
+import org.openwms.core.uaa.api.AuthenticatedUserVO;
+import org.openwms.core.uaa.api.EmailVO;
+import org.openwms.core.uaa.api.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;
+)
+@Component
+public class UserMapperImpl implements UserMapper {
+
+    private final EmailMapper emailMapper;
+    private final UserDetailsMapper userDetailsMapper;
+
+    @Autowired
+<span class="fc" id="L27">    public UserMapperImpl(EmailMapper emailMapper, UserDetailsMapper userDetailsMapper) {</span>
+
+<span class="fc" id="L29">        this.emailMapper = emailMapper;</span>
+<span class="fc" id="L30">        this.userDetailsMapper = userDetailsMapper;</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public List&lt;String&gt; convertToStrings(List&lt;Role&gt; eo) {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L36">            return null;</span>
+        }
+
+<span class="fc" id="L39">        List&lt;String&gt; list = new ArrayList&lt;String&gt;( eo.size() );</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for ( Role role : eo ) {</span>
+<span class="fc" id="L41">            list.add( convertToString( role ) );</span>
+<span class="fc" id="L42">        }</span>
+
+<span class="fc" id="L44">        return list;</span>
+    }
+
+    @Override
+    public UserVO convertToVO(User eo) {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L50">            return null;</span>
+        }
+
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (eo instanceof User) {</span>
+<span class="fc" id="L54">            return convertToAuthenticatedUserVO( (User) eo );</span>
+        }
+        else {
+<span class="nc" id="L57">            UserVO userVO = new UserVO();</span>
+
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if ( eo.hasPersistentKey() ) {</span>
+<span class="nc" id="L60">                userVO.setpKey( eo.getPersistentKey() );</span>
+            }
+<span class="nc" id="L62">            userVO.setOl( eo.getOl() );</span>
+<span class="nc" id="L63">            userVO.setExtern( eo.isExternalUser() );</span>
+<span class="nc" id="L64">            userVO.setRoleNames( convertToStrings( eo.getRoles() ) );</span>
+<span class="nc" id="L65">            userVO.setCreateDt( eo.getCreateDt() );</span>
+<span class="nc" id="L66">            userVO.setLastModifiedDt( eo.getLastModifiedDt() );</span>
+<span class="nc" id="L67">            userVO.setEmailAddresses( emailSetToEmailVOList( eo.getEmailAddresses() ) );</span>
+<span class="nc" id="L68">            userVO.setUsername( eo.getUsername() );</span>
+<span class="nc" id="L69">            userVO.setLastPasswordChange( eo.getLastPasswordChange() );</span>
+<span class="nc" id="L70">            userVO.setLocked( eo.isLocked() );</span>
+<span class="nc" id="L71">            userVO.setEnabled( eo.isEnabled() );</span>
+<span class="nc" id="L72">            userVO.setExpirationDate( eo.getExpirationDate() );</span>
+<span class="nc" id="L73">            userVO.setFullname( eo.getFullname() );</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if ( eo.hasUserDetails() ) {</span>
+<span class="nc" id="L75">                userVO.setUserDetails( userDetailsMapper.map( eo.getUserDetails() ) );</span>
+            }
+
+<span class="nc" id="L78">            return userVO;</span>
+        }
+    }
+
+    @Override
+    public AuthenticatedUserVO convertToAuthenticatedUserVO(User eo) {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L85">            return null;</span>
+        }
+
+<span class="fc" id="L88">        AuthenticatedUserVO authenticatedUserVO = new AuthenticatedUserVO();</span>
+
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if ( eo.hasPersistentKey() ) {</span>
+<span class="fc" id="L91">            authenticatedUserVO.setpKey( eo.getPersistentKey() );</span>
+        }
+<span class="fc" id="L93">        authenticatedUserVO.setOl( eo.getOl() );</span>
+<span class="fc" id="L94">        authenticatedUserVO.setExtern( eo.isExternalUser() );</span>
+<span class="fc" id="L95">        authenticatedUserVO.setPassword( eo.getPassword() );</span>
+<span class="fc" id="L96">        authenticatedUserVO.setRoleNames( convertToStrings( eo.getRoles() ) );</span>
+<span class="fc" id="L97">        authenticatedUserVO.setCreateDt( eo.getCreateDt() );</span>
+<span class="fc" id="L98">        authenticatedUserVO.setLastModifiedDt( eo.getLastModifiedDt() );</span>
+<span class="fc" id="L99">        authenticatedUserVO.setEmailAddresses( emailSetToEmailVOList( eo.getEmailAddresses() ) );</span>
+<span class="fc" id="L100">        authenticatedUserVO.setUsername( eo.getUsername() );</span>
+<span class="fc" id="L101">        authenticatedUserVO.setLastPasswordChange( eo.getLastPasswordChange() );</span>
+<span class="fc" id="L102">        authenticatedUserVO.setLocked( eo.isLocked() );</span>
+<span class="fc" id="L103">        authenticatedUserVO.setEnabled( eo.isEnabled() );</span>
+<span class="fc" id="L104">        authenticatedUserVO.setExpirationDate( eo.getExpirationDate() );</span>
+<span class="fc" id="L105">        authenticatedUserVO.setFullname( eo.getFullname() );</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if ( eo.hasUserDetails() ) {</span>
+<span class="fc" id="L107">            authenticatedUserVO.setUserDetails( userDetailsMapper.map( eo.getUserDetails() ) );</span>
+        }
+
+<span class="fc" id="L110">        return authenticatedUserVO;</span>
+    }
+
+    @Override
+    public List&lt;UserVO&gt; convertToVO(List&lt;User&gt; eo) {
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L116">            return null;</span>
+        }
+
+<span class="fc" id="L119">        List&lt;UserVO&gt; list = new ArrayList&lt;UserVO&gt;( eo.size() );</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        for ( User user : eo ) {</span>
+<span class="fc" id="L121">            list.add( convertToAuthenticatedUserVO( user ) );</span>
+<span class="fc" id="L122">        }</span>
+
+<span class="fc" id="L124">        return list;</span>
+    }
+
+    @Override
+    public User convertFrom(UserVO vo) {
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if ( vo == null ) {</span>
+<span class="nc" id="L130">            return null;</span>
+        }
+
+<span class="fc" id="L133">        String username = null;</span>
+
+<span class="fc" id="L135">        username = vo.getUsername();</span>
+
+<span class="fc" id="L137">        User user = new User( username );</span>
+
+<span class="fc" id="L139">        user.setPersistentKey( vo.getpKey() );</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if ( vo.getExtern() != null ) {</span>
+<span class="fc" id="L141">            user.setExternalUser( vo.getExtern() );</span>
+        }
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        if ( vo.getOl() != null ) {</span>
+<span class="nc" id="L144">            user.setOl( vo.getOl() );</span>
+        }
+<span class="fc" id="L146">        user.setLastPasswordChange( vo.getLastPasswordChange() );</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if ( vo.getLocked() != null ) {</span>
+<span class="fc" id="L148">            user.setLocked( vo.getLocked() );</span>
+        }
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if ( vo.getEnabled() != null ) {</span>
+<span class="fc" id="L151">            user.setEnabled( vo.getEnabled() );</span>
+        }
+<span class="fc" id="L153">        user.setExpirationDate( vo.getExpirationDate() );</span>
+<span class="fc" id="L154">        user.setFullname( vo.getFullname() );</span>
+<span class="fc" id="L155">        user.setEmailAddresses( emailVOListToEmailSet( vo.getEmailAddresses() ) );</span>
+<span class="fc" id="L156">        user.setUserDetails( userDetailsMapper.mapToEO( vo.getUserDetails() ) );</span>
+
+<span class="fc" id="L158">        enhanceEmail( user );</span>
+
+<span class="fc" id="L160">        return user;</span>
+    }
+
+    @Override
+    public void copy(User source, User target) {
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if ( source == null ) {</span>
+<span class="nc" id="L166">            return;</span>
+        }
+
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if ( source.hasPersistentKey() ) {</span>
+<span class="fc" id="L170">            target.setPersistentKey( source.getPersistentKey() );</span>
+        }
+<span class="fc" id="L172">        target.setOl( source.getOl() );</span>
+<span class="fc" id="L173">        target.setUsername( source.getUsername() );</span>
+<span class="fc" id="L174">        target.setExternalUser( source.isExternalUser() );</span>
+<span class="fc" id="L175">        target.setLastPasswordChange( source.getLastPasswordChange() );</span>
+<span class="fc" id="L176">        target.setLocked( source.isLocked() );</span>
+<span class="fc" id="L177">        target.setEnabled( source.isEnabled() );</span>
+<span class="fc" id="L178">        target.setExpirationDate( source.getExpirationDate() );</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if ( target.getRoles() != null ) {</span>
+<span class="fc" id="L180">            List&lt;Role&gt; list = source.getRoles();</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            if ( list != null ) {</span>
+<span class="fc" id="L182">                target.getRoles().clear();</span>
+<span class="fc" id="L183">                target.getRoles().addAll( list );</span>
+            }
+            else {
+<span class="nc" id="L186">                target.setRoles( null );</span>
+            }
+<span class="fc" id="L188">        }</span>
+        else {
+<span class="nc" id="L190">            List&lt;Role&gt; list = source.getRoles();</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            if ( list != null ) {</span>
+<span class="nc" id="L192">                target.setRoles( new ArrayList&lt;Role&gt;( list ) );</span>
+            }
+        }
+<span class="fc" id="L195">        target.setFullname( source.getFullname() );</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if ( target.getEmailAddresses() != null ) {</span>
+<span class="nc" id="L197">            Set&lt;Email&gt; set = source.getEmailAddresses();</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if ( set != null ) {</span>
+<span class="nc" id="L199">                target.getEmailAddresses().clear();</span>
+<span class="nc" id="L200">                target.getEmailAddresses().addAll( set );</span>
+            }
+            else {
+<span class="nc" id="L203">                target.setEmailAddresses( null );</span>
+            }
+<span class="nc" id="L205">        }</span>
+        else {
+<span class="fc" id="L207">            Set&lt;Email&gt; set = source.getEmailAddresses();</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            if ( set != null ) {</span>
+<span class="fc" id="L209">                target.setEmailAddresses( new LinkedHashSet&lt;Email&gt;( set ) );</span>
+            }
+        }
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">        if ( source.hasUserDetails() ) {</span>
+<span class="fc" id="L213">            target.setUserDetails( source.getUserDetails() );</span>
+        }
+        else {
+<span class="nc" id="L216">            target.setUserDetails( null );</span>
+        }
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if ( target.getGrants() != null ) {</span>
+<span class="fc" id="L219">            target.getGrants().clear();</span>
+<span class="fc" id="L220">            List&lt;SecurityObject&gt; list1 = source.getGrants();</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">            if ( list1 != null ) {</span>
+<span class="fc" id="L222">                target.getGrants().addAll( list1 );</span>
+            }
+        }
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        if ( target.getPasswords() != null ) {</span>
+<span class="fc" id="L226">            target.getPasswords().clear();</span>
+<span class="fc" id="L227">            List&lt;UserPassword&gt; list2 = source.getPasswords();</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">            if ( list2 != null ) {</span>
+<span class="fc" id="L229">                target.getPasswords().addAll( list2 );</span>
+            }
+        }
+
+<span class="fc" id="L233">        enhanceEmail( target );</span>
+<span class="fc" id="L234">    }</span>
+
+    protected List&lt;EmailVO&gt; emailSetToEmailVOList(Set&lt;Email&gt; set) {
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        if ( set == null ) {</span>
+<span class="nc" id="L238">            return null;</span>
+        }
+
+<span class="fc" id="L241">        List&lt;EmailVO&gt; list = new ArrayList&lt;EmailVO&gt;( set.size() );</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        for ( Email email : set ) {</span>
+<span class="fc" id="L243">            list.add( emailMapper.convertToVO( email ) );</span>
+<span class="fc" id="L244">        }</span>
+
+<span class="fc" id="L246">        return list;</span>
+    }
+
+    protected Set&lt;Email&gt; emailVOListToEmailSet(List&lt;EmailVO&gt; list) {
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        if ( list == null ) {</span>
+<span class="nc" id="L251">            return null;</span>
+        }
+
+<span class="fc" id="L254">        Set&lt;Email&gt; set = LinkedHashSet.newLinkedHashSet( list.size() );</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        for ( EmailVO emailVO : list ) {</span>
+<span class="fc" id="L256">            set.add( emailMapper.convertFrom( emailVO ) );</span>
+<span class="fc" id="L257">        }</span>
+
+<span class="fc" id="L259">        return set;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
