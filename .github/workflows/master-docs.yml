@@ -67,12 +67,12 @@ jobs:
           -Dscmpublish.pubScmUrl=scm:git:https://openwms:$PUSHKEY@github.com/openwms/org.openwms.core.uaa.lib.git
           -DdeveloperConnectionUrl=scm:git:https://openwms:$PUSHKEY@github.com/openwms/org.openwms.core.uaa.lib.git
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
-          -Pschemagen,release -B $MAVEN_OPTS
+          -Pschemagen,release,coverage -B $MAVEN_OPTS
         env:
           PUSHKEY: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar
         run: >
-          ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
           -DsurefireArgs="-Dspring.profiles.active=ASYNCHRONOUS,TEST"
           -Dsonar.login=$SONAR_TOKEN
           -DSONAR_TOKEN=$SONAR_TOKEN
