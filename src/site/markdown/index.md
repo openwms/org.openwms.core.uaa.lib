@@ -24,7 +24,6 @@ redundant setup in different locations, on different cloud platforms with differ
 
 | endpoints                              | billed | SLA                                                       |
 |----------------------------------------|--------|-----------------------------------------------------------|
-| https://openwms-core-uaa.herokuapp.com | no     | Heroku SLA for Europe region depends on AWS Europe region | 
 | https://uaa.demo.openwms.cloud         | no     | no SLA                                                    |
 
 # Build
