@@ -11,11 +11,10 @@ passwords. An `User` can be assigned to multiple `Roles`. A `Role` is a `Securit
 `Grant` is a permission that can be used in a client application.
 
 # Resources
-[![Build status](https://github.com/openwms/org.openwms.core.uaa/actions/workflows/master-build.yml/badge.svg)](https://github.com/openwms/org.openwms.core.uaa/actions/workflows/master-build.yml)
-[![Quality](https://sonarcloud.io/api/project_badges/measure?project=org.openwms:org.openwms.core.uaa&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.core.uaa)
+[![Build status](https://github.com/openwms/org.openwms.core.uaa.lib/actions/workflows/master-build.yml/badge.svg)](https://github.com/openwms/org.openwms.core.uaa.lib/actions/workflows/master-build.yml)
+[![Quality](https://sonarcloud.io/api/project_badges/measure?project=org.openwms:org.openwms.core.uaa.lib&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.core.uaa.lib)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](../../../LICENSE)
-[![Maven central](https://img.shields.io/maven-central/v/org.openwms/org.openwms.core.uaa)](https://search.maven.org/search?q=a:org.openwms.core.uaa)
-[![Docker pulls](https://img.shields.io/docker/pulls/openwms/org.openwms.core.uaa)](https://hub.docker.com/r/openwms/org.openwms.core.uaa)
+[![Maven central](https://img.shields.io/maven-central/v/org.openwms/org.openwms.core.uaa.lib)](https://search.maven.org/search?q=a:org.openwms.core.uaa.lib)
 [![Join the chat at https://gitter.im/openwms/org.openwms](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/openwms/org.openwms?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Deployment
