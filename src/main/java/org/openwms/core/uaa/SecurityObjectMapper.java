@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ package org.openwms.core.uaa;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.openwms.core.uaa.impl.SecurityObject;
 import org.openwms.core.uaa.api.SecurityObjectVO;
+import org.openwms.core.uaa.impl.SecurityObject;
 
 import java.util.List;
 
