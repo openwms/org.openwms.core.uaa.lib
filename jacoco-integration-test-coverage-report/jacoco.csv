@@ -11,7 +11,7 @@ OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.api,AuthenticatedUserVO,26,25
 OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.api,EmailVO,46,42,10,0,9,10,9,6,4,6
 OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,UAAOtlpConfiguration,3,0,0,0,1,0,1,0,1,0
 OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,UAAOtlpConfiguration.OtelConfiguration,0,8,0,0,0,2,0,2,0,2
-OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,UAASecurityConfiguration,0,49,0,0,0,9,0,3,0,3
+OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,UAASecurityConfiguration,0,59,0,0,0,11,0,4,0,4
 OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,DefaultTimeProvider,0,3,0,0,0,1,0,1,0,1
 OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,UAAModuleConfiguration.new AbstractSpringTranslator() {...},0,10,0,0,0,2,0,2,0,2
 OpenWMS.org CORE: UAA Library,org.openwms.core.uaa.app,UAADistributedConfiguration,3,0,0,0,1,0,1,0,1,0
