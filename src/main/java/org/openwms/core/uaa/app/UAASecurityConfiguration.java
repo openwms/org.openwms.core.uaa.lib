@@ -15,11 +15,13 @@
  */
 package org.openwms.core.uaa.app;
 
+import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -27,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.HashMap;
 
@@ -43,15 +46,15 @@ class UAASecurityConfiguration {
      * <p>
      * API is for non browser clients!
      */
+    @SuppressWarnings("java:S4502")
     @Bean
     @Order(2)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeRequests().anyRequest().permitAll()
-                                .and().csrf().disable().build();
+        http.authorizeHttpRequests(x -> x.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilter(new CorsFilter(new PermitAllCorsConfigurationSource()));
+        return http.build();
     }
-
-    @Value("${owms.security.successUrl}")
-    private String successUrl;
 
     @Bean
     PasswordEncoder nopPasswordEncoder(@Value("${owms.security.encoder.bcrypt.strength:15}") int strength) {
