@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Grant</title>
+<title>Role</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,20 +439,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="resources-grant">Grant</h2>
+<h2 id="resources-role">Role</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <code>Grant</code> represents a permission to perform an action. A <code>Grant</code> can be assigned to a <code>Role</code> and is always tied to some kind of action that
-can be taken. It has a unique business key, that is used in API or UI to protect against unauthorized access.</p>
+<p>An <code>User</code> could be assigned to multiple <code>Roles</code> and act on behalf of a <code>Role</code>. Additionally a <code>Role</code> assigns <code>Grants</code> to all the <code>Users</code>
+that are assigned to this <code>Role</code>. By doing so, a <code>Role</code> is also a group of <code>Grants</code> that can be assigned to multiple <code>Users</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="grant-index">Grant Index</h3>
+<h3 id="role-index">Role Index</h3>
 <div class="paragraph">
-<p>An overview of all possible operations on <code>Grants</code> can be found on the <code>Grant</code> index page that is retrieved with a <code>GET</code> request:</p>
+<p>An overview of all possible operations on <code>Roles</code> can be found on the <code>Role</code> index page that is retrieved with a <code>GET</code> request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /grants/index HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /roles/index HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -463,21 +463,36 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 343
+Content-Length: 806
 
 {
   "_links" : {
-    "grant-findbypkey" : {
-      "href" : "http://localhost:8080/grants/pKey"
+    "roles-findbypkey" : {
+      "href" : "http://localhost:8080/roles/pKey"
     },
-    "grant-findall" : {
-      "href" : "http://localhost:8080/grants"
+    "roles-findall" : {
+      "href" : "http://localhost:8080/roles"
     },
-    "grant-findallforuser" : {
-      "href" : "http://localhost:8080/grants"
+    "roles-findusersofrole" : {
+      "href" : "http://localhost:8080/roles/pKey/users"
     },
-    "grant-create" : {
-      "href" : "http://localhost:8080/grants"
+    "roles-findgrantsofrole" : {
+      "href" : "http://localhost:8080/roles/pKey/grants"
+    },
+    "roles-create" : {
+      "href" : "http://localhost:8080/roles"
+    },
+    "roles-save" : {
+      "href" : "http://localhost:8080/roles/pKey"
+    },
+    "roles-delete" : {
+      "href" : "http://localhost:8080/roles/pKey"
+    },
+    "roles-assignuser" : {
+      "href" : "http://localhost:8080/roles/pKey/users/userPKey"
+    },
+    "roles-unassignuser" : {
+      "href" : "http://localhost:8080/roles/pKey/users/userPKey"
     }
   }
 }</code></pre>
@@ -485,27 +500,26 @@ Content-Length: 343
 </div>
 </div>
 <div class="sect2">
-<h3 id="grant-create">Create a Grant</h3>
+<h3 id="role-create">Create a Role</h3>
 <div class="paragraph">
-<p>To create a new <code>Grant</code> instance, a <code>POST</code> request must be send to the server with the mandatory fields of the <code>Grant</code> resource in the
+<p>To create a new <code>Role</code> instance, a <code>POST</code> request must be send to the server with the mandatory fields of the <code>Role</code> resource in the
 request body.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /grants HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /roles HTTP/1.1
 Content-Type: application/json
-Content-Length: 132
+Content-Length: 139
 Host: localhost:8080
 
 {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "name" : "VIEW_USERS",
-  "description" : "Permission to view all users in UI"
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
+  "ol" : 0,
+  "name" : "ROLE_DEV",
+  "description" : "Developers",
+  "immutable" : true
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Not named properties are optional to pass.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -522,125 +536,273 @@ Host: localhost:8080
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Technical versioning field to check the instance version</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unique name of the Grant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique name of the Role</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>immutable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not this Role is immutable. Immutable Roles can&#8217;t be modified</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) A descriptive text for the Grant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A descriptive text for the Role</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>If the <code>Grant</code> has been created successfully, the server returns the URI to the created resource in the <code>Location</code> header:</p>
+<p>If the <code>Role</code> has been created successfully, the server returns the URI to the created resource in the <code>Location</code> header:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/grants/afdd51e6-0be4-4fb2-93c4-1af347ad448b
-Content-Type: application/vnd.openwms.uaa.grant-v1+json
-Content-Length: 435
+Location: http://localhost:8080/roles/a4c24027-4116-4feb-aa98-3252e973e5ae
+Content-Type: application/vnd.openwms.uaa.role-v1+json
+Content-Length: 548
 
 {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
   "_links" : {
-    "grant-findbypkey" : {
-      "href" : "http://localhost:8080/grants/afdd51e6-0be4-4fb2-93c4-1af347ad448b"
+    "users" : {
+      "href" : "http://localhost:8080/roles/a4c24027-4116-4feb-aa98-3252e973e5ae/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/a4c24027-4116-4feb-aa98-3252e973e5ae/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/a4c24027-4116-4feb-aa98-3252e973e5ae"
     }
   },
   "ol" : 0,
-  "createDt" : "2025-02-04T22:19:05.358688584Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.358688584Z",
-  "pKey" : "afdd51e6-0be4-4fb2-93c4-1af347ad448b",
-  "name" : "VIEW_USERS",
-  "description" : "Permission to view all users in UI"
+  "pKey" : "a4c24027-4116-4feb-aa98-3252e973e5ae",
+  "name" : "ROLE_DEV",
+  "description" : "Developers",
+  "immutable" : true
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If a <code>Grant</code> with the same name already exists the server returns an error:</p>
+<p>If a <code>Role</code> with the same name already exists the server returns an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 409 Conflict
 Content-Type: application/hal+json
-Content-Length: 140
+Content-Length: 121
 
 {
-  "message" : "Grant with name SEC_UAA_USER_LOOKUP already exists",
-  "messageKey" : "grant.name.already.exists",
+  "message" : "Role with name [ROLE_ADMIN] already exists",
+  "messageKey" : "already.exists",
   "httpStatus" : "409"
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="grant-findall">Find all Grants</h3>
+<h3 id="role-findall">Find all Roles</h3>
 <div class="paragraph">
-<p>To retrieve all existing <code>Grants</code> from the server, a client simply needs to do a <code>GET</code> request to the <code>Grants</code> resource.</p>
+<p>To find and retrieve an array of all existing <code>Roles</code> a role may call a <code>GET</code> request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /grants HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /roles HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The server responds with a list representation of all <code>Grants</code> or an empty list:</p>
+<p>and returns either an array of <code>Roles</code> or an empty array, but always a <code>200-OK</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/vnd.openwms.uaa.grant-v1+json
-Content-Length: 1472
+Content-Type: application/vnd.openwms.uaa.role-v1+json
+Content-Length: 844
 
 [ {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
   "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/3"
+    "rel" : "users",
+    "href" : "http://localhost:8080/roles/1/users"
+  }, {
+    "rel" : "grants",
+    "href" : "http://localhost:8080/roles/1/grants"
+  }, {
+    "rel" : "role-findbypkey",
+    "href" : "http://localhost:8080/roles/1"
   } ],
   "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.398507000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.398507000Z",
-  "pKey" : "3",
-  "name" : "SEC_UAA_USER_LOOKUP",
-  "description" : "Permission to find Users"
+  "pKey" : "1",
+  "name" : "ROLE_ADMIN",
+  "description" : "Super user role",
+  "immutable" : true
 }, {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
   "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/4"
+    "rel" : "users",
+    "href" : "http://localhost:8080/roles/2/users"
+  }, {
+    "rel" : "grants",
+    "href" : "http://localhost:8080/roles/2/grants"
+  }, {
+    "rel" : "role-findbypkey",
+    "href" : "http://localhost:8080/roles/2"
   } ],
   "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.398507000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.398507000Z",
-  "pKey" : "4",
-  "name" : "SEC_UAA_USER_CREATE",
-  "description" : "Permission to create Users"
-}, {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/5"
-  } ],
+  "pKey" : "2",
+  "name" : "ROLE_OPS",
+  "description" : "Operator role",
+  "immutable" : true
+} ]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="role-findbypkey">Find a Role by persistent key</h3>
+<div class="paragraph">
+<p>Each <code>Role</code> has an unique ID the <em>pKey</em> or <em>persistent identifier</em>. To find and return a <code>Role</code> by <code>pKey</code> a client must send a <code>GET</code> request
+to the <code>Roles</code> resource:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /roles/1 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/vnd.openwms.uaa.role-v1+json
+Content-Length: 415
+
+{
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
   "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.398507000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.398507000Z",
+  "pKey" : "1",
+  "name" : "ROLE_ADMIN",
+  "description" : "Super user role",
+  "immutable" : true
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="role-findusersofrole">Find all Users that are assigned to a Role</h3>
+<div class="paragraph">
+<p>A client might ask for all <code>Users</code> that are assigned to a <code>Role</code> resource. Therefore the client needs to query all <code>users</code> of the primary
+<code>Role</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /roles/1/users HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and get an array of <code>Users</code> back, that could also be empty:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/vnd.openwms.uaa.user-v1+json
+Content-Length: 779
+
+[ {
+  "links" : [ ],
+  "ol" : 1,
+  "createDt" : "2020-06-22T19:02:47.404000000Z",
+  "lastModifiedDt" : "2025-02-04T22:43:29.802163000Z",
+  "pKey" : "96baa849-dd19-4b19-8c5e-895d3b7f405d",
+  "username" : "jenkins",
+  "externalUser" : true,
+  "lastPasswordChange" : "2020-06-22T19:02:47Z",
+  "locked" : true,
+  "enabled" : true,
+  "expirationDate" : "2020-06-23T19:02:45Z",
+  "fullname" : "Mister Jenkins",
+  "details" : { },
+  "emailAddresses" : [ {
+    "emailAddress" : "admin.private@acme.com",
+    "primary" : true,
+    "fullname" : "Mr. Jenkins"
+  }, {
+    "emailAddress" : "admin@acme.com",
+    "primary" : false,
+    "fullname" : "Mr. Jenkins"
+  } ],
+  "roleNames" : [ "ROLE_ADMIN" ],
+  "password" : "{bcrypt}$2a$15$baURCfRsoxem.eOv0IJDsup.9wEmHdiw.j8f0RaMflDbFnQWNipvG"
+} ]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="role-findgrantsofrole">Find all Grants that belong to a Role</h3>
+<div class="paragraph">
+<p>A client might ask for all <code>Grants</code> that are assigned to a <code>Role</code> resource. Therefore the client needs to query all <code>grants</code> of the primary
+<code>Role</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /roles/1/grants HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and get an array of <code>Grants</code> back, that could also be empty:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/vnd.openwms.uaa.security-object-v1+json
+Content-Length: 1104
+
+[ {
+  "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
+  "ol" : 1,
+  "createDt" : "2025-02-04T22:43:30.033838000Z",
+  "lastModifiedDt" : "2025-02-04T22:43:30.033838000Z",
   "pKey" : "5",
   "name" : "SEC_UAA_USER_MODIFY",
   "description" : "Permission to modify Users"
 }, {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/6"
-  } ],
+  "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
   "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.398507000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.398507000Z",
+  "createDt" : "2025-02-04T22:43:30.033838000Z",
+  "lastModifiedDt" : "2025-02-04T22:43:30.033838000Z",
+  "pKey" : "4",
+  "name" : "SEC_UAA_USER_CREATE",
+  "description" : "Permission to create Users"
+}, {
+  "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
+  "ol" : 1,
+  "createDt" : "2025-02-04T22:43:30.033838000Z",
+  "lastModifiedDt" : "2025-02-04T22:43:30.033838000Z",
+  "pKey" : "3",
+  "name" : "SEC_UAA_USER_LOOKUP",
+  "description" : "Permission to find Users"
+}, {
+  "@class" : "org.openwms.core.uaa.api.SecurityObjectVO",
+  "ol" : 1,
+  "createDt" : "2025-02-04T22:43:30.033838000Z",
+  "lastModifiedDt" : "2025-02-04T22:43:30.033838000Z",
   "pKey" : "6",
   "name" : "SEC_UAA_USER_DELETE",
   "description" : "Permission to delete Users"
@@ -649,36 +811,25 @@ Content-Length: 1472
 </div>
 </div>
 <div class="sect2">
-<h3 id="grant-findbypkey">Find a Grant by persistent key</h3>
+<h3 id="role-save">Modify an existing Role</h3>
 <div class="paragraph">
-<p>Each <code>Grant</code> has an unique ID the <em>pKey</em> or <em>persistent identifier</em>. To find and return a <code>Grant</code> by <code>pKey</code> a client must send a <code>GET</code>
-request to the <code>Grants</code> resource:</p>
+<p>An existing <code>Role</code> instance can be modified by sending a <code>PUT</code> request with the <code>Role</code> representation as request body. At least the name of
+the <code>Role</code>, as an identifying attribute must be set.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /grants/3 HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/vnd.openwms.uaa.grant-v1+json
-Content-Length: 364
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /roles/1 HTTP/1.1
+Content-Type: application/json
+Content-Length: 167
+Host: localhost:8080
 
 {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "_links" : {
-    "grant-findbypkey" : {
-      "href" : "http://localhost:8080/grants/3"
-    }
-  },
-  "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.451335000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.451335000Z",
-  "pKey" : "3",
-  "name" : "SEC_UAA_USER_LOOKUP",
-  "description" : "Permission to find Users"
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
+  "ol" : 0,
+  "pKey" : "1",
+  "name" : "ROLE_SUPER",
+  "description" : "Administrators role",
+  "immutable" : false
 }</code></pre>
 </div>
 </div>
@@ -697,9 +848,9 @@ Content-Length: 364
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pKey</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type identifier of the Grant type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The persistent key must be passed when modifying an existing instance</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ol</code></p></td>
@@ -707,128 +858,209 @@ Content-Length: 364
 <td class="tableblock halign-left valign-top"><p class="tableblock">Technical versioning field to check the instance version</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pKey</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The technical persistent identifier of the Grant</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createDt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When the record has been created</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lastModifiedDt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Timestamp when the record has been updated the last time</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unique name of the Grant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name as an identifying attribute of the existing Role, cannot be changed</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A descriptive text for the Grant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A description text to update</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>immutable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the Role is immutable or not</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect2">
-<h3 id="grant-findallforuser">Find all Grants of a User</h3>
 <div class="paragraph">
-<p>To retrieve all existing <code>Grants</code> from assigned to a <code>User</code>, a client simply needs to do a <code>GET</code> request to the <code>Grants</code> resource and pass
-the users identity within the <code>X-Identity</code> http header.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /grants HTTP/1.1
-X-Identity: jenkins
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The server responds with a list representation of all <code>Grants</code>:</p>
+<p>If the server has correctly updated the <code>Role</code> the response contains the updated representation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/vnd.openwms.uaa.grant-v1+json
-Content-Length: 1472
+Content-Type: application/vnd.openwms.uaa.role-v1+json
+Content-Length: 419
 
-[ {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/5"
-  } ],
+{
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
   "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.484778000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.484778000Z",
-  "pKey" : "5",
-  "name" : "SEC_UAA_USER_MODIFY",
-  "description" : "Permission to modify Users"
-}, {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/4"
-  } ],
-  "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.484778000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.484778000Z",
-  "pKey" : "4",
-  "name" : "SEC_UAA_USER_CREATE",
-  "description" : "Permission to create Users"
-}, {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/3"
-  } ],
-  "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.484778000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.484778000Z",
-  "pKey" : "3",
-  "name" : "SEC_UAA_USER_LOOKUP",
-  "description" : "Permission to find Users"
-}, {
-  "@class" : "org.openwms.core.uaa.api.GrantVO",
-  "links" : [ {
-    "rel" : "grant-findbypkey",
-    "href" : "http://localhost:8080/grants/6"
-  } ],
-  "ol" : 1,
-  "createDt" : "2025-02-04T22:19:05.484778000Z",
-  "lastModifiedDt" : "2025-02-04T22:19:05.484778000Z",
-  "pKey" : "6",
-  "name" : "SEC_UAA_USER_DELETE",
-  "description" : "Permission to delete Users"
-} ]</code></pre>
+  "pKey" : "1",
+  "name" : "ROLE_SUPER",
+  "description" : "Administrators role",
+  "immutable" : true
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>or a HTTP <code>204-NO CONTENT</code> response if no <code>Grants</code> are assigned to the <code>User</code>:</p>
+<p>If the name of the <code>Role</code> to update is missing, the server responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
+Content-Type: application/hal+json
+Content-Length: 143
+
+{
+  "message" : "Error on validating the input parameters [save.role.name]",
+  "messageKey" : "core.validation.error",
+  "httpStatus" : "400"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="role-assignuser">Assign an User to a Role</h3>
+<div class="paragraph">
+<p><code>Users</code> can be assigned to one or more <code>Roles</code>. To assign an existing <code>User</code> to an existing <code>Role</code> the client must send a <code>POST</code> request
+to the primary <code>Role</code> resource:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /roles/1/users/96baa849-dd19-4b19-8c5e-895d3b7f405e HTTP/1.1
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>or a HTTP <code>404-NOT FOUND</code> response if the <code>User</code> does not exist:</p>
+<p>If the <code>User</code> has been assigned successfully, the server responds with <code>200-OK</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/vnd.openwms.uaa.role-v1+json
+Content-Length: 415
+
+{
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
+  "ol" : 1,
+  "pKey" : "1",
+  "name" : "ROLE_ADMIN",
+  "description" : "Super user role",
+  "immutable" : true
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the <code>User</code> or the <code>Role</code> do not exist the server responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/hal+json
-Content-Length: 121
+Content-Length: 166
 
 {
-  "message" : "User with name UNKNOWN does not exist",
-  "messageKey" : "user.name.not.exist",
-  "httpStatus" : "404"
+  "message" : "User with ID UNKNOWN does not exist",
+  "messageKey" : "user.pkey.not.exist",
+  "obj" : [ "UNKNOWN" ],
+  "httpStatus" : "404",
+  "class" : "String"
 }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="role-unassignuser">Unassign an User from a Role</h3>
+<div class="paragraph">
+<p>Already assigned <code>Users</code> can be unassigned from a <code>Role</code>. Therefore the client sends a <code>DELETE</code> request on the secondary <code>User</code> resource of
+the primary <code>Role</code> resource. Note: This will not delete the <code>User</code> but delete the assignment between the <code>Role</code> and the <code>User</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /roles/1/users/96baa849-dd19-4b19-8c5e-895d3b7f405d HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the <code>User</code> has been unassigned successfully, the server responds with <code>200-OK</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/vnd.openwms.uaa.role-v1+json
+Content-Length: 415
+
+{
+  "@class" : "org.openwms.core.uaa.api.RoleVO",
+  "_links" : {
+    "users" : {
+      "href" : "http://localhost:8080/roles/1/users"
+    },
+    "grants" : {
+      "href" : "http://localhost:8080/roles/1/grants"
+    },
+    "role-findbypkey" : {
+      "href" : "http://localhost:8080/roles/1"
+    }
+  },
+  "ol" : 1,
+  "pKey" : "1",
+  "name" : "ROLE_ADMIN",
+  "description" : "Super user role",
+  "immutable" : true
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the <code>User</code> or the <code>Role</code> do not exist the server responds with an error:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Content-Type: application/hal+json
+Content-Length: 166
+
+{
+  "message" : "Role with ID UNKNOWN does not exist",
+  "messageKey" : "role.pkey.not.exist",
+  "obj" : [ "UNKNOWN" ],
+  "httpStatus" : "404",
+  "class" : "String"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="role-delete">Delete a Role</h3>
+<div class="paragraph">
+<p>To finally delete all <code>Role</code> data, a <code>DELETE</code> request with the persistent key of the <code>Role</code> is required:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /roles/1 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the <code>Role</code> has been deleted successfully the server responds:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
 </div>
 </div>
 </div>
@@ -837,7 +1069,7 @@ Content-Length: 121
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-04 22:15:40 UTC
+Last updated 2025-02-04 22:41:46 UTC
 </div>
 </div>
 </body>
