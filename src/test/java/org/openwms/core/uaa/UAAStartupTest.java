@@ -16,18 +16,17 @@
 package org.openwms.core.uaa;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * A UAAStartupTest.
  *
  * @author Heiko Scherrer
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class UAAStartupTest {
 
-    @Test void contextLoads() { }
+    @Test void contextLoads() {
+        // Just try to load the context
+    }
 }
