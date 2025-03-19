@@ -248,7 +248,7 @@ class UserServiceImpl implements UserService {
     @Override
     @Measured
     public @NotNull User findById(@NotNull Long pk) {
-<span class="pc" id="L251">        return repository.findById(pk).orElseThrow(() -&gt; new NotFoundException(</span>
+<span class="fc" id="L251">        return repository.findById(pk).orElseThrow(() -&gt; new NotFoundException(</span>
                 translator, USER_WITH_PK_NOT_EXIST, new Long[]{pk}, pk
         ));
     }

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="testdb" schema="public" type="PostgreSQL - 17.2">
+   <sequences>
+      <sequence increment="1" name="uaa_email_seq" startValue="1"/>
+      <sequence increment="1" name="uaa_so_seq" startValue="1"/>
+      <sequence increment="1" name="uaa_up_seq" startValue="1"/>
+      <sequence increment="1" name="uaa_user_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table catalog="testdb" name="cor_uaa_email" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="c_address" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="c_full_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="c_primary" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="c_user_pk" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent catalog="testdb" column="c_pk" foreignKey="fk_uaa_user_email" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_user"/>
+         </column>
+         <primaryKey column="c_pk" sequenceNumberInPK="1"/>
+         <index name="cor_uaa_email_pkey" unique="true">
+            <column ascending="true" name="c_pk"/>
+         </index>
+         <index name="uc_email_user" unique="true">
+            <column ascending="true" name="c_user_pk"/>
+            <column ascending="true" name="c_address"/>
+         </index>
+      </table>
+      <table catalog="testdb" name="cor_uaa_role" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_type" nullable="false" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="c_pk" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child catalog="testdb" column="c_grant_id" foreignKey="fk_uaa_grant_role" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role_role"/>
+            <child catalog="testdb" column="c_role_id" foreignKey="fk_uaa_role_grant" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role_role"/>
+            <child catalog="testdb" column="c_role_id" foreignKey="fk_uaa_role_user" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role_user"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="c_created" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="c_created_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="c_updated" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="c_ol" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="c_pid" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="c_description" nullable="true" remarks="" size="1024" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="c_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="c_immutable" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="c_pk" sequenceNumberInPK="1"/>
+         <index name="cor_uaa_role_pkey" unique="true">
+            <column ascending="true" name="c_pk"/>
+         </index>
+         <index name="uc_uaa_role" unique="true">
+            <column ascending="true" name="c_name"/>
+         </index>
+         <index name="ukp15j9hfo67f9rpemrxaixc1c5" unique="true">
+            <column ascending="true" name="c_pid"/>
+         </index>
+      </table>
+      <table catalog="testdb" name="cor_uaa_role_role" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_role_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent catalog="testdb" column="c_pk" foreignKey="fk_uaa_role_grant" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="c_grant_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent catalog="testdb" column="c_pk" foreignKey="fk_uaa_grant_role" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role"/>
+         </column>
+         <primaryKey column="c_role_id" sequenceNumberInPK="1"/>
+         <primaryKey column="c_grant_id" sequenceNumberInPK="2"/>
+         <index name="cor_uaa_role_role_pkey" unique="true">
+            <column ascending="true" name="c_role_id"/>
+            <column ascending="true" name="c_grant_id"/>
+         </index>
+      </table>
+      <table catalog="testdb" name="cor_uaa_role_user" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_role_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent catalog="testdb" column="c_pk" foreignKey="fk_uaa_role_user" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="c_user_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent catalog="testdb" column="c_pk" foreignKey="fk_uaa_user_role" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_user"/>
+         </column>
+         <primaryKey column="c_role_id" sequenceNumberInPK="1"/>
+         <primaryKey column="c_user_id" sequenceNumberInPK="2"/>
+         <index name="cor_uaa_role_user_pkey" unique="true">
+            <column ascending="true" name="c_role_id"/>
+            <column ascending="true" name="c_user_id"/>
+         </index>
+      </table>
+      <table catalog="testdb" name="cor_uaa_user" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_type" nullable="false" remarks="" size="31" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="c_pk" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child catalog="testdb" column="c_user_pk" foreignKey="fk_uaa_user_email" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_email"/>
+            <child catalog="testdb" column="c_user_id" foreignKey="fk_uaa_user_role" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_role_user"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="c_created" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="c_created_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="c_updated" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="c_ol" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="c_pid" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="c_enabled" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="c_expiration_date" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="c_extern" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="c_fullname" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="12" name="c_last_password_change" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="c_locked" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="c_password" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="c_comment" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="c_department" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="c_description" nullable="true" remarks="" size="1024" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="c_gender" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="c_im" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="c_image" nullable="true" remarks="" size="10" type="oid" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="c_office" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="c_phone_no" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="c_username" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <child catalog="testdb" column="c_username" foreignKey="fk_uaa_pw_user" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_user_password"/>
+         </column>
+         <primaryKey column="c_pk" sequenceNumberInPK="1"/>
+         <index name="cor_uaa_user_pkey" unique="true">
+            <column ascending="true" name="c_pk"/>
+         </index>
+         <index name="uc_uaa_user_name" unique="true">
+            <column ascending="true" name="c_username"/>
+         </index>
+         <index name="uk4x3xss9td2bjnyhneyoiodrn6" unique="true">
+            <column ascending="true" name="c_pid"/>
+         </index>
+         <checkConstraint constraint="((c_gender)::text = ANY ((ARRAY['MALE'::character varying, 'FEMALE'::character varying, 'GENDERLESS'::character varying])::text[]))" name="cor_uaa_user_c_gender_check"/>
+      </table>
+      <table catalog="testdb" name="cor_uaa_user_password" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="c_password" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="c_password_changed" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="c_username" nullable="true" remarks="" size="255" type="varchar" typeCode="12">
+            <parent catalog="testdb" column="c_username" foreignKey="fk_uaa_pw_user" implied="false" onDeleteCascade="false" schema="public" table="cor_uaa_user"/>
+         </column>
+         <primaryKey column="c_pk" sequenceNumberInPK="1"/>
+         <index name="cor_uaa_user_password_pkey" unique="true">
+            <column ascending="true" name="c_pk"/>
+         </index>
+      </table>
+   </tables>
+</database>
