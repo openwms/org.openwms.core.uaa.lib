@@ -92,6 +92,15 @@ public interface UserService extends FindOperations<User, Long>, SaveOperations<
     void delete(@NotBlank String pKey);
 
     /**
+     * Find a user by username and password.
+     *
+     * @param username The username to authenticate
+     * @param password The raw password to validate
+     * @return An Optional containing the authenticated User if credentials are valid, empty otherwise
+     */
+    @NotNull Optional<User> findByUsernameAndPassword(@NotBlank String username, @NotBlank String password);
+
+    /**
      * Update the password of the {@link User}.
      *
      * @param pKey The identifiable persistent key

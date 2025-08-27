@@ -19,11 +19,14 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import org.ameba.annotation.Default;
+import org.openwms.core.uaa.api.RoleType;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -45,9 +48,14 @@ import java.util.Set;
 public class Role extends SecurityObject implements Serializable {
 
     public static final String NOT_ALLOWED_TO_CREATE_A_ROLE_WITH_AN_EMPTY_NAME = "Not allowed to create a Role with an empty name";
-    /** Whether or not this Role is immutable. Immutable Roles can't be modified. */
+    /** Whether, this Role is immutable. Immutable Roles can't be modified. */
     @Column(name = "C_IMMUTABLE")
     private Boolean immutable = false;
+
+    /** A Role can have the characteristic of being either a {@link RoleType#BUSINESS} or a {@link RoleType#TECHNICAL} role. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "C_ROLE_TYPE")
+    private RoleType roleType;
 
     /* ------------------- collection mapping ------------------- */
     /**
@@ -198,6 +206,23 @@ public class Role extends SecurityObject implements Serializable {
     // Used by Mapper only
     public void setImmutable(Boolean immutable) {
         this.immutable = immutable;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    /**
+     *
+     * @param roleType
+     */
+    // Used by Mapper only
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
     }
 
     /**

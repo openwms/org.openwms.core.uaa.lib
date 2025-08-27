@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.UAAApplicationTest;
+import org.openwms.core.uaa.api.CredentialsVO;
 import org.openwms.core.uaa.api.EmailVO;
 import org.openwms.core.uaa.api.PasswordString;
 import org.openwms.core.uaa.api.RoleVO;
@@ -244,6 +245,27 @@ class UserControllerDocumentation {
                 .andDo(document("user-change-password", preprocessResponse(prettyPrint())))
                 .andExpect(status().isOk())
         ;
+    }
+
+    @Sql("classpath:test.sql")
+    @Test void shall_find_user_with_valid_credentials() throws Exception {
+        var credentials = new CredentialsVO("tester", "tester");
+        mockMvc.perform(post(API_USERS + "/authenticate")
+                        .content(objectMapper.writeValueAsString(credentials))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("user-authenticate-valid", preprocessResponse(prettyPrint())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is("tester")));
+    }
+
+    @Sql("classpath:test.sql")
+    @Test void shall_find_user_with_invalid_credentials() throws Exception {
+        var credentials = new CredentialsVO("tester", "wrongpassword");
+        mockMvc.perform(post(API_USERS + "/authenticate")
+                        .content(objectMapper.writeValueAsString(credentials))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("user-authenticate-invalid", preprocessResponse(prettyPrint())))
+                .andExpect(status().isNotFound());
     }
 
     @Sql("classpath:test.sql")

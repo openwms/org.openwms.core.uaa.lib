@@ -17,7 +17,7 @@ package org.openwms.core.uaa;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
@@ -25,6 +25,7 @@ import org.ameba.i18n.Translator;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.core.uaa.api.AuthenticatedUserVO;
+import org.openwms.core.uaa.api.CredentialsVO;
 import org.openwms.core.uaa.api.PasswordString;
 import org.openwms.core.uaa.api.RoleVO;
 import org.openwms.core.uaa.api.SecurityObjectVO;
@@ -86,12 +87,15 @@ public class UserController extends AbstractWebController {
         return ResponseEntity.ok(
                 new Index(
                         linkTo(methodOn(UserController.class).findByPKey("{pKey}")).withRel("users-findbypkey"),
+                        linkTo(methodOn(UserController.class).findByUsername("{username}")).withRel("users-findbyusername"),
+                        linkTo(methodOn(UserController.class).findByUsernameAndPassword(new CredentialsVO())).withRel("users-authenticate"),
                         linkTo(methodOn(UserController.class).findAllUsers()).withRel("users-findall"),
                         linkTo(methodOn(UserController.class).findGrantsForUser("{pKey}")).withRel("users-findgrants"),
+                        linkTo(methodOn(UserController.class).findRolesForUser("{pKey}")).withRel("users-findroles"),
                         linkTo(methodOn(UserController.class).create(new UserVO(), null)).withRel("users-create"),
                         linkTo(methodOn(UserController.class).save(new UserVO())).withRel("users-save"),
                         linkTo(methodOn(UserController.class).saveImage("", "{pKey}")).withRel("users-saveimage"),
-                        linkTo(methodOn(UserController.class).updatePassword("{pKey}", new PasswordString("newPassword"))).withRel("users-change-password"),
+                        linkTo(methodOn(UserController.class).updatePassword("{pKey}", new PasswordString("newPassword"))).withRel("users-changepassword"),
                         linkTo(methodOn(UserController.class).delete("{pKey}")).withRel("users-delete")
                 )
         );
@@ -127,6 +131,25 @@ public class UserController extends AbstractWebController {
                 .body(result);
     }
 
+    @PostMapping(value = API_USERS + "/authenticate")
+    public ResponseEntity<UserVO> findByUsernameAndPassword(@RequestBody @Valid @NotNull CredentialsVO credentials) {
+
+        var userOpt = userService.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
+        if (userOpt.isEmpty()) {
+            throw new NotFoundException(
+                    translator.translate(USER_WITH_NAME_NOT_EXIST, credentials.getUsername()),
+                    USER_WITH_NAME_NOT_EXIST,
+                    credentials.getUsername());
+        }
+        
+        var result = userMapper.convertToVO(userOpt.get());
+        addSelfLink(result);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.CONTENT_TYPE, UserVO.MEDIA_TYPE)
+                .body(result);
+    }
+
     @GetMapping(API_USERS)
     public ResponseEntity<List<UserVO>> findAllUsers() {
 
@@ -151,7 +174,7 @@ public class UserController extends AbstractWebController {
     }
 
     @GetMapping(API_USERS + "/{pKey}/roles")
-    public ResponseEntity<List<RoleVO>> findRolesForUser(@PathVariable("pKey") @NotEmpty String pKey) {
+    public ResponseEntity<List<RoleVO>> findRolesForUser(@PathVariable("pKey") @NotBlank String pKey) {
 
         var eo = userService.findByPKey(pKey);
         var result = roleMapper.convertToVO(eo.getRoles());

@@ -226,6 +226,25 @@ class UserServiceImpl implements UserService {
      */
     @Override
     @Measured
+    public @NotNull Optional<User> findByUsernameAndPassword(@NotBlank String username, @NotBlank String password) {
+        var userOpt = repository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        
+        var user = userOpt.get();
+        if (enc.matches(password, user.getPassword())) {
+            return Optional.of(user);
+        }
+        
+        return Optional.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
     public @NotNull UserVO updatePassword(@NotBlank String pKey, @NotNull CharSequence newPassword) throws InvalidPasswordException {
         var saved = findByPKey(pKey);
         saved.changePassword(enc.encode(newPassword), newPassword.toString(), enc);
