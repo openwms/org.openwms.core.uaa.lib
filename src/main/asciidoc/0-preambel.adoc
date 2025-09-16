@@ -1,12 +1,13 @@
-[[representation]]
+[[section-representation]]
 = Representation Formats
 Basically JSON is used as representation format by default if not otherwise requested or mentioned below. XML format is supported for the
 index pages as well, but must be requested explicitly. Furthermore a vendor specific JSON format is used to represent resource
-representations. Therefore it's absolutely required the `Accept` header denotes the demanded type. Find the type in the examples below.
+representations. Therefore, it is absolutely required that the `Accept` header denotes the demanded type. Find the type in the examples
+below.
 
 == Dates in JSON
 Date or datetime fields are not treated specially in JSON. Within the scope of this API a date or datetime field is always expected and
-rendered as JSON String in ISO8601 format with timezone information and milliseconds: `yyyy-MM-dd'T'HH:mm:ssXXX`.
+rendered as JSON String in ISO8601 format with timezone information and milliseconds: `yyyy-MM-dd'T'HH:mm:ss.SSSTZD`.
 
 == Embedded Entities
 For the sake of convenience some response entities may included embedded entities or even parts of it. A reference to the actual entity is
@@ -17,10 +18,10 @@ Beside the actual representation of resources, the server may result an error re
 the error occurred. This information is additional to the standard HTTP status code and may help clients to identify the error cause in
 order to re-phrase and send the request again.
 
-Currently there are two types of errors with their own response formats.
+Currently, there are two types of errors with their own response formats.
 
 === Server Declined Errors
-This kind of errors are sent by the server runtime environment even before the request had a chance to be processed.
+These kind of errors are sent by the server runtime environment even before the request had a chance to be processed.
 
 An example response looks like this:
 
@@ -48,6 +49,7 @@ The JSON structure contains the following fields.
 | path          | The part of the URI for the REST resource that was queried
 |===
 
+[[api-errors]]
 === API Declined Errors
 Those errors are thrown within the REST API validation and processing logic. For example, if a client request does not match the expected
 format or has produced an error on server side, the API will decline the request and return a response with status client-side error (4xx).
@@ -70,7 +72,7 @@ The JSON structure contains the following fields.
 | Property Name | Description
 
 | message       | A short error text
-| messageKey    | An unique identifier across the API that can be used to identify and translate the error message on the client side
+| messageKey    | A unique identifier across the API that can be used to identify and translate the error message on the client side
 | obj           | An array of possible passed arguments to the message
 | httpStatus    | The http status of the error
 | class         | The arguments type
