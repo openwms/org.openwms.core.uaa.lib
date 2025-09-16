@@ -132,7 +132,7 @@ class UserControllerDocumentation {
     @Sql("classpath:test.sql")
     @Test void shall_find_grants_of_user() throws Exception {
         var mvcResult = mockMvc.perform(get(API_USERS + "/96baa849-dd19-4b19-8c5e-895d3b7f405d/grants"))
-                .andDo(document("user-findGrantsOfRUser", preprocessResponse(prettyPrint())))
+                .andDo(document("user-findGrantsOfUser", preprocessResponse(prettyPrint())))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()", greaterThan(0)))
                 .andExpect(status().isOk())
