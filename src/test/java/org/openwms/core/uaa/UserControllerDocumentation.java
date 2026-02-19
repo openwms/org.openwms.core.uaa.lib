@@ -213,18 +213,18 @@ class UserControllerDocumentation {
         vo.setLocked(true);
         vo.setEnabled(false);
         var contentAsString = mockMvc.perform(
-                        put(API_USERS)
+                        put(API_USERS + "/" + pKey)
                                 .content(objectMapper.writeValueAsString(vo))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("user-save", preprocessResponse(prettyPrint())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("superuser")))
+                .andExpect(jsonPath("$.username", is("tester"))) // user must not be overridden
                 .andExpect(jsonPath("$.locked", is(true)))
                 .andExpect(jsonPath("$.enabled", is(false)))
                 .andReturn().getResponse().getContentAsString()
         ;
         vo = objectMapper.readValue(contentAsString, UserVO.class);
-        assertThat(vo.getUsername()).isEqualTo("superuser");
+        assertThat(vo.getUsername()).isEqualTo("tester");
 
         // Add an image to the User
         var s = Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("pic.png").toURI())));

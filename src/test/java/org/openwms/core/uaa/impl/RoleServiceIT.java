@@ -29,6 +29,7 @@ import org.ameba.i18n.Translator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openwms.core.TestBase;
+import org.openwms.core.uaa.GrantService;
 import org.openwms.core.uaa.RoleMapper;
 import org.openwms.core.uaa.RoleService;
 import org.openwms.core.uaa.UserService;
@@ -61,7 +62,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         showSql = false,
         includeFilters =
                 {
-                        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = RoleService.class)
+                        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = RoleService.class),
+                        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = GrantService.class)
                 }
 )
 @Sql("classpath:test.sql")
