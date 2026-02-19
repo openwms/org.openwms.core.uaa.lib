@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
+import org.openwms.core.uaa.GrantService;
 import org.openwms.core.uaa.RoleMapper;
 import org.openwms.core.uaa.RoleService;
 import org.openwms.core.uaa.UserService;
@@ -50,13 +51,15 @@ class RoleServiceImpl implements RoleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
     private final RoleRepository repository;
     private final UserService userService;
+    private final GrantService grantService;
     private final RoleMapper mapper;
     private final Translator translator;
     private final ApplicationEventPublisher eventPublisher;
 
-    RoleServiceImpl(RoleRepository repository, UserService userService, RoleMapper mapper, Translator translator, ApplicationEventPublisher eventPublisher) {
+    RoleServiceImpl(RoleRepository repository, UserService userService, GrantService grantService, RoleMapper mapper, Translator translator, ApplicationEventPublisher eventPublisher) {
         this.repository = repository;
         this.userService = userService;
+        this.grantService = grantService;
         this.mapper = mapper;
         this.translator = translator;
         this.eventPublisher = eventPublisher;
@@ -166,6 +169,20 @@ class RoleServiceImpl implements RoleService {
         var role = findByPKeyInternal(pKey);
         var user = userService.findByPKey(userPKey);
         role.removeUser(user);
+        role = repository.save(role);
+        eventPublisher.publishEvent(new RoleEvent(role, RoleEvent.EventType.MODIFIED));
+        return mapper.convertToVO(role);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull RoleVO unassignGrant(@NotBlank String pKey, @NotBlank String grantPKey) {
+        var role = findByPKeyInternal(pKey);
+        var grant = grantService.findByPKey(grantPKey);
+        role.removeGrant(grant);
         role = repository.save(role);
         eventPublisher.publishEvent(new RoleEvent(role, RoleEvent.EventType.MODIFIED));
         return mapper.convertToVO(role);

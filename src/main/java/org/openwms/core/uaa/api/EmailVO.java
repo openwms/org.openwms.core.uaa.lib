@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ public class EmailVO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof EmailVO)) return false;
-        EmailVO emailVO = (EmailVO) o;
+        var emailVO = (EmailVO) o;
         return Objects.equals(emailAddress, emailVO.emailAddress) && Objects.equals(primary, emailVO.primary) && Objects.equals(fullname, emailVO.fullname);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,12 +43,15 @@ class UserBasicFieldUpdater implements UserUpdater {
             existingInstance.setPersistentKey( newInstance.getPersistentKey() );
         }
         existingInstance.setOl( newInstance.getOl() );
-        existingInstance.setUsername( newInstance.getUsername() );
         existingInstance.setExternalUser( newInstance.isExternalUser() );
-        existingInstance.setLastPasswordChange( newInstance.getLastPasswordChange() );
+        if (newInstance.getLastPasswordChange() != null) {
+            existingInstance.setLastPasswordChange( newInstance.getLastPasswordChange() );
+        }
         existingInstance.setLocked( newInstance.isLocked() );
         existingInstance.setEnabled( newInstance.isEnabled() );
-        existingInstance.setExpirationDate( newInstance.getExpirationDate() );
+        if (newInstance.getExpirationDate() != null) {
+            existingInstance.setExpirationDate( newInstance.getExpirationDate() );
+        }
         existingInstance.setFullname( newInstance.getFullname() );
         if ( newInstance.hasUserDetails() ) {
             existingInstance.setUserDetails( newInstance.getUserDetails() );

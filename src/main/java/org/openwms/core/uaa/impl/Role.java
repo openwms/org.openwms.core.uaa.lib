@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ import java.util.Set;
 public class Role extends SecurityObject implements Serializable {
 
     public static final String NOT_ALLOWED_TO_CREATE_A_ROLE_WITH_AN_EMPTY_NAME = "Not allowed to create a Role with an empty name";
-    /** Whether, this Role is immutable. Immutable Roles can't be modified. */
+    /** Whether this Role is immutable. Immutable Roles can't be modified. */
     @Column(name = "C_IMMUTABLE")
     private Boolean immutable = false;
 

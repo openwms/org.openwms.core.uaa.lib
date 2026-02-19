@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>27.6</version>
+        <version>27.7.1</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.uaa.lib</artifactId>
@@ -37,7 +37,6 @@
         <core.test.arch.version>1.1.0-SNAPSHOT</core.test.arch.version>
         <core.version>3.1.0-SNAPSHOT</core.version>
         <ehcache.version>3.11.1</ehcache.version>
-        <schemaspy-maven-plugin.version>5.3.1</schemaspy-maven-plugin.version>
         <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
     </properties>
 

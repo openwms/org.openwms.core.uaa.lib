@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -457,6 +457,11 @@ public class User extends ApplicationEntity implements Serializable {
      * @param roles The new list of {@link Role}s
      */
     public void setRoles(List<Role> roles) {
+        if (roles == null) {
+            return;
+        }
+        this.roles.forEach(r -> r.removeUser(this));
+        roles.forEach(r -> r.addUser(this));
         this.roles = roles;
     }
 
@@ -621,6 +626,14 @@ public class User extends ApplicationEntity implements Serializable {
                 ", fullname='" + fullname + '\'' +
                 ", userDetails=" + userDetails +
                 '}';
+    }
+
+    public void clearRoles() {
+        if (this.roles == null) {
+            return;
+        }
+        this.roles.forEach(r -> r.removeUser(this));
+        this.roles.clear();
     }
 
     /**

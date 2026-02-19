@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -182,6 +182,18 @@ public class RoleController extends AbstractWebController {
     public ResponseEntity<RoleVO> unassignUser(@PathVariable("pKey") String pKey, @PathVariable("userPKey") String userPKey) {
 
         var result = roleService.unassignUser(pKey, userPKey);
+        replaceUsers(result);
+        addSelfLink(result);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, RoleVO.MEDIA_TYPE)
+                .body(result);
+    }
+
+    @DeleteMapping(API_ROLES + "/{pKey}/grants/{grantPKey}")
+    public ResponseEntity<RoleVO> unassignGrant(@PathVariable("pKey") String pKey, @PathVariable("grantPKey") String grantPKey) {
+
+        var result = roleService.unassignGrant(pKey, grantPKey);
         replaceUsers(result);
         addSelfLink(result);
         return ResponseEntity

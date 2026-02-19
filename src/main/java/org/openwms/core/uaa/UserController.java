@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ import org.openwms.core.uaa.api.RoleVO;
 import org.openwms.core.uaa.api.SecurityObjectVO;
 import org.openwms.core.uaa.api.UserVO;
 import org.openwms.core.uaa.api.ValidationGroups;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +67,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @MeasuredRestController
 public class UserController extends AbstractWebController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final Translator translator;
     private final UserService userService;
     private final UserMapper userMapper;
@@ -93,7 +96,7 @@ public class UserController extends AbstractWebController {
                         linkTo(methodOn(UserController.class).findGrantsForUser("{pKey}")).withRel("users-findgrants"),
                         linkTo(methodOn(UserController.class).findRolesForUser("{pKey}")).withRel("users-findroles"),
                         linkTo(methodOn(UserController.class).create(new UserVO(), null)).withRel("users-create"),
-                        linkTo(methodOn(UserController.class).save(new UserVO())).withRel("users-save"),
+                        linkTo(methodOn(UserController.class).save("{pKey}", new UserVO())).withRel("users-save"),
                         linkTo(methodOn(UserController.class).saveImage("", "{pKey}")).withRel("users-saveimage"),
                         linkTo(methodOn(UserController.class).updatePassword("{pKey}", new PasswordString("newPassword"))).withRel("users-changepassword"),
                         linkTo(methodOn(UserController.class).delete("{pKey}")).withRel("users-delete")
@@ -188,6 +191,9 @@ public class UserController extends AbstractWebController {
     @Validated(ValidationGroups.Create.class)
     public ResponseEntity<UserVO> create(@RequestBody @Valid @NotNull UserVO vo, HttpServletRequest req) {
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Creating User [{}]", vo);
+        }
         var eo = userMapper.convertFrom(vo);
         var created = userService.create(eo, vo.getRoleNames());
         var result = userMapper.convertToVO(created);
@@ -197,10 +203,13 @@ public class UserController extends AbstractWebController {
                 .body(result);
     }
 
-    @PutMapping(API_USERS)
+    @PutMapping(API_USERS + "/{pKey}")
     @Validated(ValidationGroups.Modify.class)
-    public ResponseEntity<UserVO> save(@RequestBody @Valid @NotNull UserVO vo) {
+    public ResponseEntity<UserVO> save(@PathVariable("pKey") String pKey, @RequestBody @Valid @NotNull UserVO vo) {
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Updating User with pKey [{}] to [{}]", pKey, vo);
+        }
         var user = userMapper.convertFrom(vo);
         var saved = userService.save(user, vo.getRoleNames());
         var result = userMapper.convertToVO(saved);
